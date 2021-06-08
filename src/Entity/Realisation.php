@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\RealisationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=RealisationRepository::class)
@@ -19,11 +20,15 @@ class Realisation
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="time")
+     * @Assert\NotBlank()
+     * @Assert\Time
+     * @var string A "H:i:s" formatted value
      */
     private $time;
 

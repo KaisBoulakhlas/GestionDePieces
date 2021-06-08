@@ -43,6 +43,11 @@ class OrderPurchase
      */
     private $pieces;
 
+    /**
+     * @ORM\Column(type="decimal", precision=5, scale=2)
+     */
+    private $priceCatalogue;
+
     public function __construct()
     {
         $this->pieces = new ArrayCollection();
@@ -109,6 +114,18 @@ class OrderPurchase
     public function removePiece(Piece $piece): self
     {
         $this->pieces->removeElement($piece);
+
+        return $this;
+    }
+
+    public function getPriceCatalogue(): ?string
+    {
+        return $this->priceCatalogue;
+    }
+
+    public function setPriceCatalogue(string $priceCatalogue): self
+    {
+        $this->priceCatalogue = $priceCatalogue;
 
         return $this;
     }

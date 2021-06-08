@@ -6,6 +6,7 @@ use App\Repository\PieceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PieceRepository::class)
@@ -21,26 +22,31 @@ class Piece
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $quantity;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Assert\NotBlank()
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $type;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Assert\NotBlank()
      */
     private $priceCatalogue;
 
@@ -49,17 +55,6 @@ class Piece
      * @ORM\JoinColumn(nullable=false)
      */
     private $range;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Piece::class, inversedBy="pieces")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
-    private $piece;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Piece::class, mappedBy="piece")
-     */
-    private $pieces;
 
     /**
      * @ORM\ManyToOne(targetEntity=Provider::class, inversedBy="pieces")
@@ -72,11 +67,31 @@ class Piece
      */
     private $orderPurchases;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Piece::class, inversedBy="piecesChildren")
+     */
+    private $piecesParentes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Piece::class, mappedBy="piecesParentes")
+     */
+    private $piecesChildren;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=OrderLine::class, inversedBy="piece")
+     */
+    private $orderLine;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=EstimateLine::class, inversedBy="piece")
+     */
+    private $estimateLine;
 
     public function __construct()
     {
-        $this->pieces = new ArrayCollection();
         $this->orderPurchases = new ArrayCollection();
+        $this->piecesParentes = new ArrayCollection();
+        $this->piecesChildren = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -157,48 +172,6 @@ class Piece
         return $this;
     }
 
-    public function getPiece(): ?self
-    {
-        return $this->piece;
-    }
-
-    public function setPiece(?self $piece): self
-    {
-        $this->piece = $piece;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|self[]
-     */
-    public function getPieces(): Collection
-    {
-        return $this->pieces;
-    }
-
-    public function addPiece(self $piece): self
-    {
-        if (!$this->pieces->contains($piece)) {
-            $this->pieces[] = $piece;
-            $piece->setPiece($this);
-        }
-
-        return $this;
-    }
-
-    public function removePiece(self $piece): self
-    {
-        if ($this->pieces->removeElement($piece)) {
-            // set the owning side to null (unless already changed)
-            if ($piece->getPiece() === $this) {
-                $piece->setPiece(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getProvider(): ?Provider
     {
         return $this->provider;
@@ -234,6 +207,81 @@ class Piece
         if ($this->orderPurchases->removeElement($orderPurchase)) {
             $orderPurchase->removePiece($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getPiecesParentes(): Collection
+    {
+        return $this->piecesParentes;
+    }
+
+    public function addPiecesParente(self $piecesParente): self
+    {
+        if (!$this->piecesParentes->contains($piecesParente)) {
+            $this->piecesParentes[] = $piecesParente;
+        }
+
+        return $this;
+    }
+
+    public function removePiecesParente(self $piecesParente): self
+    {
+        $this->piecesParentes->removeElement($piecesParente);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getPiecesChildren(): Collection
+    {
+        return $this->piecesChildren;
+    }
+
+    public function addPiece(self $pieceChildren): self
+    {
+        if (!$this->piecesChildren->contains($pieceChildren)) {
+            $this->piecesChildren[] = $pieceChildren;
+            $pieceChildren->addPiecesParente($this);
+        }
+
+        return $this;
+    }
+
+    public function removePiece(self $pieceChildren): self
+    {
+        if ($this->piecesChildren->removeElement($pieceChildren)) {
+            $pieceChildren->removePiecesParente($this);
+        }
+
+        return $this;
+    }
+
+    public function getOrderLine(): ?OrderLine
+    {
+        return $this->orderLine;
+    }
+
+    public function setOrderLine(?OrderLine $orderLine): self
+    {
+        $this->orderLine = $orderLine;
+
+        return $this;
+    }
+
+    public function getEstimateLine(): ?EstimateLine
+    {
+        return $this->estimateLine;
+    }
+
+    public function setEstimateLine(?EstimateLine $estimateLine): self
+    {
+        $this->estimateLine = $estimateLine;
 
         return $this;
     }
