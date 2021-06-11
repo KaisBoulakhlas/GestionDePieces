@@ -51,12 +51,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $plainPassword = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=WorkStation::class, inversedBy="userworkstation")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $workStation;
-
-    /**
      * @ORM\OneToMany(targetEntity=Range::class, mappedBy="userWorkstation")
      */
     private $ranges;
@@ -66,10 +60,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $realisations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=WorkStation::class, mappedBy="userWorkstation")
+     */
+    private $workStations;
+
+
     public function __construct()
     {
         $this->ranges = new ArrayCollection();
         $this->realisations = new ArrayCollection();
+        $this->workStations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,18 +167,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getWorkStation(): ?WorkStation
-    {
-        return $this->workStation;
-    }
-
-    public function setWorkStation(?WorkStation $workStation): self
-    {
-        $this->workStation = $workStation;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Range[]
      */
@@ -249,4 +238,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|WorkStation[]
+     */
+    public function getWorkStations(): Collection
+    {
+        return $this->workStations;
+    }
+
+    public function addWorkStation(WorkStation $workStation): self
+    {
+        if (!$this->workStations->contains($workStation)) {
+            $this->workStations[] = $workStation;
+            $workStation->setUserWorkstation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorkStation(WorkStation $workStation): self
+    {
+        if ($this->workStations->removeElement($workStation)) {
+            // set the owning side to null (unless already changed)
+            if ($workStation->getUserWorkstation() === $this) {
+                $workStation->setUserWorkstation(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

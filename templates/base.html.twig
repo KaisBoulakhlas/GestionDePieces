@@ -12,8 +12,8 @@
     </head>
     <body>
     {% if app.user %}
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Gestion de pieces</a>
+        <nav class="p-3 navbar navbar-expand-lg navbar-light bg-danger">
+            <a class="navbar-brand text-white text-uppercase" href="#">Gestion de pieces</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -21,28 +21,26 @@
                 <ul class="navbar-nav">
                     {% if is_granted("ROLE_OUVRIER") %}
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Atelier</a>
+                            <a class="nav-link text-white" href="#">Atelier</a>
                         </li>
-                    {% endif %}
-                    {% if is_granted("ROLE_OUVRIER") %}
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Pièces</a>
+                            <a class="nav-link text-white" href="#">Pièces</a>
                         </li>
                     {% endif %}
                     {% if is_granted("ROLE_COMMERCIAL") %}
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Devis</a>
+                            <a class="nav-link text-white" href="#">Devis</a>
                         </li>
                     {% endif %}
                     {% if is_granted("ROLE_COMPTABLE") %}
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Commande de ventes</a>
+                            <a class="nav-link text-white" href="#">Commande de ventes</a>
                         </li>
                     {% endif %}
                 </ul>
             </div>
             <form class="form-inline my-2 my-lg-0">
-                <a href="{{ path('app_logout') }}" class="btn btn-sm btn-outline-danger text-light" role="button">Se déconnecter</a>
+                <a href="{{ path('app_logout') }}" class="btn btn-sm btn-outline-primary text-white" role="button">Se déconnecter</a>
             </form>
         </nav>
     {% endif %}
@@ -51,5 +49,8 @@
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
     {% endblock %}
+   <script>
+
+   </script>
     </body>
 </html>

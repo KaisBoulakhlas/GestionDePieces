@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Time;
 
 /**
  * @ORM\Entity(repositoryClass=OperationRepository::class)
@@ -30,7 +31,7 @@ class Operation
      * @ORM\Column(type="time")
      * @Assert\NotBlank()
      * @Assert\Time
-     * @var string A "H:i:s" formatted value
+     * @var time A "H:i:s" formatted value
      */
     private $time;
 
@@ -43,6 +44,13 @@ class Operation
      * @ORM\OneToMany(targetEntity=Realisation::class, mappedBy="operation")
      */
     private $realisations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Machine::class, inversedBy="operations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $machine;
+
 
     public function __construct()
     {
@@ -67,12 +75,12 @@ class Operation
         return $this;
     }
 
-    public function getTime(): ?\DateTimeInterface
+    public function getTime(): ?Time
     {
         return $this->time;
     }
 
-    public function setTime(\DateTimeInterface $time): self
+    public function setTime(Time $time): self
     {
         $this->time = $time;
 
@@ -129,6 +137,45 @@ class Operation
                 $realisation->setOperation(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Piece[]
+     */
+    public function getPieces(): Collection
+    {
+        return $this->pieces;
+    }
+
+    public function addPiece(Piece $piece): self
+    {
+        if (!$this->pieces->contains($piece)) {
+            $this->pieces[] = $piece;
+            $piece->addOperation($this);
+        }
+
+        return $this;
+    }
+
+    public function removePiece(Piece $piece): self
+    {
+        if ($this->pieces->removeElement($piece)) {
+            $piece->removeOperation($this);
+        }
+
+        return $this;
+    }
+
+    public function getMachine(): ?Machine
+    {
+        return $this->machine;
+    }
+
+    public function setMachine(?Machine $machine): self
+    {
+        $this->machine = $machine;
 
         return $this;
     }

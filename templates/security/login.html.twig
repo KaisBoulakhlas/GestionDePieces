@@ -4,22 +4,23 @@
 
 {% block body %}
 <div class="col d-flex justify-content-center mt-5 container">
-    <form method="post" class="card bg-light col-6 rounded">
+    <form method="post" class="card bg-light col-6 rounded my-card">
         {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            <div class="alert alert-danger text-center">Identifiant ou mot de passe incorrect .</div>
         {% endif %}
-
         <div class="card-body">
             <div class="card-header">
                 <h1 class="h3 font-weight-normal text-uppercase text-center rounded-top">Gestion de pièces</h1>
             </div>
-            <div class="mt-2">
-                <label for="inputEmail">Email : </label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mt-2" autocomplete="email" required autofocus>
-            </div>
-            <div class="mt-2">
-                <label for="inputPassword">Mot de passe :</label>
-                <input type="password" name="password" id="inputPassword" class="form-control mt-2" autocomplete="current-password" required>
+            <div class="container mx-5">
+                <div class="mt-2 w-75 p-3">
+                    <label for="inputEmail">Email : </label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mt-2" autocomplete="email" required autofocus>
+                </div>
+                <div class="mt-2 w-75 p-3">
+                    <label for="inputPassword">Mot de passe :</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control mt-2" autocomplete="current-password" required>
+                </div>
             </div>
 
             <input type="hidden" name="_csrf_token"

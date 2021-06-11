@@ -37,9 +37,15 @@ class Machine
      */
     private $realisations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Operation::class, mappedBy="machine")
+     */
+    private $operations;
+
     public function __construct()
     {
         $this->realisations = new ArrayCollection();
+        $this->operations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,6 +101,36 @@ class Machine
             // set the owning side to null (unless already changed)
             if ($realisation->getMachine() === $this) {
                 $realisation->setMachine(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Operation[]
+     */
+    public function getOperations(): Collection
+    {
+        return $this->operations;
+    }
+
+    public function addOperation(Operation $operation): self
+    {
+        if (!$this->operations->contains($operation)) {
+            $this->operations[] = $operation;
+            $operation->setMachine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOperation(Operation $operation): self
+    {
+        if ($this->operations->removeElement($operation)) {
+            // set the owning side to null (unless already changed)
+            if ($operation->getMachine() === $this) {
+                $operation->setMachine(null);
             }
         }
 

@@ -27,19 +27,22 @@ class WorkStation
     private $libelle;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="workStation")
-     */
-    private $userWorkstation;
-
-    /**
      * @ORM\OneToMany(targetEntity=Machine::class, mappedBy="workStation")
      */
     private $machines;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="workStations")
+     */
+    private $userWorkstation;
+
+
+
     public function __construct()
     {
-        $this->userWorkstation = new ArrayCollection();
         $this->machines = new ArrayCollection();
+        $this->users = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -55,36 +58,6 @@ class WorkStation
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|user[]
-     */
-    public function getUserworkstation(): Collection
-    {
-        return $this->userWorkstation;
-    }
-
-    public function addUserworkstation(User $userWorkstation): self
-    {
-        if (!$this->userWorkstation->contains($userWorkstation)) {
-            $this->userWorkstation[] = $userWorkstation;
-            $userWorkstation->setWorkStation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserworkstation(User $userWorkstation): self
-    {
-        if ($this->userWorkstation->removeElement($userWorkstation)) {
-            // set the owning side to null (unless already changed)
-            if ($userWorkstation->getWorkStation() === $this) {
-                $userWorkstation->setWorkStation(null);
-            }
-        }
 
         return $this;
     }
@@ -118,5 +91,21 @@ class WorkStation
 
         return $this;
     }
+
+    public function getUserWorkstation(): ?User
+    {
+        return $this->userWorkstation;
+    }
+
+    public function setUserWorkstation(?User $userWorkstation): self
+    {
+        $this->userWorkstation = $userWorkstation;
+
+        return $this;
+    }
+
+
+
+
 
 }

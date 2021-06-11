@@ -28,7 +28,7 @@ class Range
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ranges")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $userWorkstation;
 

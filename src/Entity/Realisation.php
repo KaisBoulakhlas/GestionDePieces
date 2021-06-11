@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\RealisationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Time;
 
 /**
  * @ORM\Entity(repositoryClass=RealisationRepository::class)
@@ -25,10 +26,10 @@ class Realisation
     private $libelle;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="string", length=10)
      * @Assert\NotBlank()
      * @Assert\Time
-     * @var string A "H:i:s" formatted value
+     * @var time A "H:i:s" formatted value
      */
     private $time;
 
@@ -67,12 +68,12 @@ class Realisation
         return $this;
     }
 
-    public function getTime(): ?\DateTimeInterface
+    public function getTime(): Time
     {
         return $this->time;
     }
 
-    public function setTime(\DateTimeInterface $time): self
+    public function setTime(Time $time): self
     {
         $this->time = $time;
 
