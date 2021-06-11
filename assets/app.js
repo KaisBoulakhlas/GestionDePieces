@@ -1,8 +1,13 @@
-import './styles/app.scss';
+import './styles/app.css';
 
 // start the Stimulus application
-import "bootstrap";
 import './bootstrap';
+import $ from 'jquery';
+import 'bootstrap';
+import { toggleActiveClassNav } from './nav';
 
-//import $ from 'jquery'
+window.addEventListener('load', () => {
+    toggleActiveClassNav();
+})
 
+// Toggle Class NavBar

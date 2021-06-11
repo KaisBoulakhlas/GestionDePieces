@@ -1,0 +1,21 @@
+@import '~bootstrap';
+
+body {
+    background-color: beige;
+}
+
+.navbar li.active > a {
+    transition: color 0.3s !important;
+}
+
+.navbar li.active > a {
+    border-bottom: 3px solid white !important;
+    color: black !important;
+}
+.my-card {
+    transition: box-shadow 0.3s;
+}
+
+.my-card:hover {
+    box-shadow: 0 0 4px 0 lightblue;
+}
