@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Operation;
+use App\Entity\Range;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,20 @@ class OperationRepository extends ServiceEntityRepository
         parent::__construct($registry, Operation::class);
     }
 
+    /**
+     * @param Range $range
+     * @return Operation[] Returns an array of Advert objects
+     */
+
+    public function findAllOperationsByRange(Range $range)
+    {
+        return $this->createQueryBuilder('operations')
+            ->andWhere('operations.ranges = :range')
+            ->setParameter('range', $range)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return Operation[] Returns an array of Operation objects
     //  */

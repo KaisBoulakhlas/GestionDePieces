@@ -30,8 +30,6 @@ class Operation
     /**
      * @ORM\Column(type="time")
      * @Assert\NotBlank()
-     * @Assert\Time
-     * @var time A "H:i:s" formatted value
      */
     private $time;
 
@@ -75,12 +73,12 @@ class Operation
         return $this;
     }
 
-    public function getTime(): ?Time
+    public function getTime(): ?\DateTime
     {
         return $this->time;
     }
 
-    public function setTime(Time $time): self
+    public function setTime(\DateTime $time): self
     {
         $this->time = $time;
 
