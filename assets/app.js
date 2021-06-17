@@ -66,5 +66,44 @@ $(document).ready(function () {
         });
     });
 
+    const $workStation = $('#operation_workStation');
+    const operationMachine  = document.querySelector('#operation_machine')
+    const operationMachineAdd  = document.querySelector('#container_add_operation #operation_machine')
+    operationMachineAdd ? operationMachineAdd.setAttribute('disabled','disabled') : null
+    $workStation.change(function() {
+        const $form = $(this).closest('form');
+        const time =$('#operation_time');
+        let data = {};
+        data[$workStation.attr('name')] = $workStation.val();
+        const selectWorkStation = document.querySelector("#container_add_operation #operation_workStation")
+        let index = selectWorkStation && selectWorkStation.selectedIndex;
+        if(index > 0){
+            operationMachineAdd ? operationMachineAdd.removeAttribute('disabled') : null
+        }
+
+        $.ajax({
+            url : $form.attr('action'),
+            type: $form.attr('method'),
+            data : data,
+            success: function(html) {
+                console.log(data)
+                const operationMachine = $('#operation_machine');
+                operationMachine.replaceWith(
+                    $(html).find('#operation_machine')
+                );
+            },
+            error: function(xhr) {
+                console.log(xhr)
+            }
+        }).done(function() {
+            if(index === 0){
+                operationMachineAdd ? operationMachineAdd.setAttribute('disabled','disabled') : null
+            }
+        });
+
+    });
+
+
+
 });
 

@@ -1,5 +1,5 @@
 @import '~bootstrap';
-
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap');
 /* Material icons */
 @font-face {
     font-family: 'Material Icons';
@@ -25,7 +25,9 @@
 }
 
 body {
-    background-color: beige;
+    background-color: #fafafa;
+    font-family: 'Rubik', sans-serif;
+
 }
 
 .navbar li > a {
