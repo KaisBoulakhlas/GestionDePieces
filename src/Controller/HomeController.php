@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Range;
+use App\Entity\User;
+use App\Entity\WorkStation;
 use App\Form\RangeType;
+use App\Repository\OperationRepository;
 use App\Repository\RangeRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,6 +32,7 @@ class HomeController extends AbstractController
      */
     public function index(RangeRepository $rangeRepository): Response
     {
+
         $ranges = $rangeRepository->findBy(array(), array('id' => 'asc'));
         return $this->render('home/index.html.twig', [
             'ranges' => $ranges,
@@ -48,7 +53,7 @@ class HomeController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($range);
             $em->flush();
-            $this->addFlash('success', "La gamme " . $range->getLibelle() . " a bien été créée avec succès.");
+            $this->addFlash('success_range_add', "La gamme " . $range->getLibelle() . " a bien été créée avec succès.");
 
         }
 
@@ -74,7 +79,7 @@ class HomeController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->flush();
-            $this->addFlash('success', "La gamme ". $range->getLibelle() . " a été modifiée avec succès.");
+            $this->addFlash('success_range_edit', "La gamme ". $range->getLibelle() . " a été modifiée avec succès.");
         };
 
         return $this->render('home/edit.html.twig', [
@@ -98,7 +103,7 @@ class HomeController extends AbstractController
         if($this->isCsrfTokenValid('delete' . $range->getId(), $request->request->get('_token'))){
             $em->remove($range);
             $em->flush();
-            $this->addFlash('success', "La gamme " . $range->getLibelle() . " a bien été supprimée avec succès.");
+            $this->addFlash('success_range_delete', "La gamme " . $range->getLibelle() . " a bien été supprimée avec succès.");
         }
 
         return $this->redirectToRoute('home');

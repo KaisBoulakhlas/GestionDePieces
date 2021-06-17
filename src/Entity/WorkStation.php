@@ -36,12 +36,18 @@ class WorkStation
      */
     private $userWorkstation;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Operation::class, mappedBy="workStation", orphanRemoval=true)
+     */
+    private $operations;
+
 
 
     public function __construct()
     {
         $this->machines = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->operations = new ArrayCollection();
 
     }
 
@@ -104,8 +110,38 @@ class WorkStation
         return $this;
     }
 
+    /**
+     * @return Collection|Operation[]
+     */
+    public function getOperations(): Collection
+    {
+        return $this->operations;
+    }
 
+    public function addOperation(Operation $operation): self
+    {
+        if (!$this->operations->contains($operation)) {
+            $this->operations[] = $operation;
+            $operation->setWorkStation($this);
+        }
 
+        return $this;
+    }
 
+    public function removeOperation(Operation $operation): self
+    {
+        if ($this->operations->removeElement($operation)) {
+            // set the owning side to null (unless already changed)
+            if ($operation->getWorkStation() === $this) {
+                $operation->setWorkStation(null);
+            }
+        }
 
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->libelle;
+    }
 }

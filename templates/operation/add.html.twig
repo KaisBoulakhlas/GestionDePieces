@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une opération{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Ajouter une opération</h1>
+        <hr/>
+        <div class="container"  id="container_add_operation">
+            {{ form_start(form_operation) }}
+            <div class="form-row">
+                <div class="form-group col-md-4 mt-1">
+                    {{ form_row(form_operation.libelle) }}
+                </div>
+                <div class="form-group col-md-4 ml-2">
+                    {{ form_row(form_operation.time) }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    {{ form_row(form_operation.workStation) }}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ form_row(form_operation.machine) }}
+                </div>
+            </div>
+            <div class="form-row">
+                    <button class="btn btn-outline-success" type="submit" style="margin-left:5px;">{{ button|default('Ajouter')}}</button>
+            </div>
+            {{ form_end(form_operation) }}
+        </div>
+    </div>
+
+{% endblock %}

@@ -11,9 +11,22 @@
                 </button>
             </div>
             <div class="modal-body">
-                    {{ form_row(form.libelle,
-                        {'attr': {'class': 'form-control'}})
-                    }}
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        {{ form_row(form.libelle,
+                            {'attr': {'class': 'form-control'}})
+                        }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        {{ form_row(form.userWorkstation,
+                            {'attr': {'class': 'form-control'}})
+                        }}
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>

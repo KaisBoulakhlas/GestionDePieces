@@ -13,7 +13,7 @@
     <body>
     {% if app.user %}
         <nav class="p-3 navbar navbar-expand-lg navbar-light bg-danger">
-            <a class="navbar-brand text-white text-uppercase" href="#">Gestion de pieces</a>
+            <a class="navbar-brand text-white text-uppercase" href="{{ path('home') }}">Gestion de pieces</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -21,7 +21,7 @@
                 <ul class="navbar-nav">
                     {% if is_granted("ROLE_OUVRIER") %}
                         <li class="nav-item active">
-                            <a class="nav-link text-white" href="#">Atelier</a>
+                            <a class="nav-link text-white" href="{{ path('home') }}">Atelier</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Pièces</a>

@@ -49,6 +49,12 @@ class Operation
      */
     private $machine;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=WorkStation::class, inversedBy="operations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $workStation;
+
 
     public function __construct()
     {
@@ -66,7 +72,7 @@ class Operation
         return $this->libelle;
     }
 
-    public function setLibelle(string $libelle): self
+    public function setLibelle(string $libelle = null): self
     {
         $this->libelle = $libelle;
 
@@ -78,7 +84,7 @@ class Operation
         return $this->time;
     }
 
-    public function setTime(\DateTime $time): self
+    public function setTime(\DateTime $time = null): self
     {
         $this->time = $time;
 
@@ -139,32 +145,6 @@ class Operation
         return $this;
     }
 
-    /**
-     * @return Collection|Piece[]
-     */
-    public function getPieces(): Collection
-    {
-        return $this->pieces;
-    }
-
-    public function addPiece(Piece $piece): self
-    {
-        if (!$this->pieces->contains($piece)) {
-            $this->pieces[] = $piece;
-            $piece->addOperation($this);
-        }
-
-        return $this;
-    }
-
-    public function removePiece(Piece $piece): self
-    {
-        if ($this->pieces->removeElement($piece)) {
-            $piece->removeOperation($this);
-        }
-
-        return $this;
-    }
 
     public function getMachine(): ?Machine
     {
@@ -174,6 +154,18 @@ class Operation
     public function setMachine(?Machine $machine): self
     {
         $this->machine = $machine;
+
+        return $this;
+    }
+
+    public function getWorkStation(): ?WorkStation
+    {
+        return $this->workStation;
+    }
+
+    public function setWorkStation(?WorkStation $workStation): self
+    {
+        $this->workStation = $workStation;
 
         return $this;
     }
