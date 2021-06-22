@@ -35,6 +35,7 @@ class OperationType extends AbstractType
             ])
             ->add('time',TimeType::class, [
                 'label' => 'Durée : ',
+                'widget' => 'single_text',
                 'with_seconds' => true
             ])
             ->add('workStation', EntityType::class, [

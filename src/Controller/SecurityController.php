@@ -2,19 +2,24 @@
 
 namespace App\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+ **/
 class SecurityController extends AbstractController
 {
     /**
      * @Route("/", name="app_login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

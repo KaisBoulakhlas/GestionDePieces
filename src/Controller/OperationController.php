@@ -11,6 +11,7 @@ use App\Repository\OperationRepository;
 use App\Repository\RangeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,6 +20,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ROLE_OUVRIER")
+ **/
 class OperationController extends AbstractController
 {
     protected $em;
@@ -29,7 +33,7 @@ class OperationController extends AbstractController
     }
 
     /**
-     * @Route("range/{id}/operations", name="range.operations.index")
+     * @Route("/range/{id}/operations", name="range.operations.index")
      * @param Range $range
      * @param OperationRepository $operationRepository
      * @return Response
@@ -45,7 +49,7 @@ class OperationController extends AbstractController
 
 
     /**
-     * @Route("range/{id}/operation/add", name="range.operation.add" , methods="GET|POST")
+     * @Route("/range/{id}/operation/add", name="range.operation.add" , methods="GET|POST")
      * @param $id
      * @param Request $request
      * @param RangeRepository $rangeRepository
@@ -76,7 +80,7 @@ class OperationController extends AbstractController
     }
 
     /**
-     * @Route("range/{id}/operation/edit/{operationId}", name="range.operation.edit", methods="GET|POST")
+     * @Route("/range/{id}/operation/edit/{operationId}", name="range.operation.edit", methods="GET|POST")
      * @param $id
      * @param $operationId
      * @param Request $request
@@ -107,7 +111,7 @@ class OperationController extends AbstractController
     }
 
     /**
-     * @Route("range/{id}/operation/delete/{operationId}", name="range.operation.delete")
+     * @Route("/range/{id}/operation/delete/{operationId}", name="range.operation.delete")
      * @param $id
      * @param $operationId
      * @param Request $request

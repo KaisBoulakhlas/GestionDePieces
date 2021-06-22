@@ -1,3 +1,4 @@
+{% set route_name = app.request.attributes.get('_route') %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,11 +21,14 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     {% if is_granted("ROLE_OUVRIER") %}
-                        <li class="nav-item active">
+                        <li {% if route_name matches '{^home}' or route_name matches '{^range}' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
                             <a class="nav-link text-white" href="{{ path('home') }}">Atelier</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Pièces</a>
+                        <li {% if route_name matches '{^pieces}' or route_name matches '{^piece}' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+                            <a class="nav-link text-white" href="{{ path('pieces.index') }}">Pièces</a>
+                        </li>
+                        <li {% if route_name matches '{^work}'%} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+                            <a class="nav-link text-white" href="{{ path('workstation.index') }}">Postes de travail</a>
                         </li>
                     {% endif %}
                     {% if is_granted("ROLE_COMMERCIAL") %}

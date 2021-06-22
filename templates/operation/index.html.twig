@@ -5,8 +5,8 @@
 {% block body %}
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6 text-center mb-5">
-            <h1 class="heading-section">Opérations de la gamme {{ range.id }}</h1>
+        <div class="col-md-7 text-center mb-5">
+            <h1 class="heading-section"><i class="material-icons" >settings</i> Opérations de la gamme {{ range.id }}</h1>
             <a href="{{ path('home') }}" class="btn btn-sm btn-outline-primary w-25 mt-3"><i class="material-icons" >arrow_back</i></a>
         </div>
     </div>
@@ -22,7 +22,7 @@
                     {{ message }}
                 </div>
             {% endif %}
-            {% if type == 'success_operation_edit' %}
+            {% if type == 'success_piece_edit' %}
                 <div class="alert alert-warning" role="alert">
                     {{ message }}
                 </div>
