@@ -30,6 +30,12 @@ body {
 
 }
 
+#piece_piecesChildren, .form-edit-piece .form-pieces-children{
+    display: grid;
+    grid-template-columns: 191px 138px 231px 200px;
+    grid-auto-flow: row;
+}
+
 .navbar li > a {
     transition: color 0.3s !important;
 }

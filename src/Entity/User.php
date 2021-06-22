@@ -65,12 +65,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $workStations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=RangeRealisation::class, mappedBy="userWorkStation")
+     */
+    private $rangeRealisations;
+
 
     public function __construct()
     {
         $this->ranges = new ArrayCollection();
         $this->realisations = new ArrayCollection();
         $this->workStations = new ArrayCollection();
+        $this->rangeRealisations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -107,7 +113,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_OUVRIER';
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -274,6 +280,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString() : string
     {
         return $this->username;
+    }
+
+    /**
+     * @return Collection|RangeRealisation[]
+     */
+    public function getRangeRealisations(): Collection
+    {
+        return $this->rangeRealisations;
+    }
+
+    public function addRangeRealisation(RangeRealisation $rangeRealisation): self
+    {
+        if (!$this->rangeRealisations->contains($rangeRealisation)) {
+            $this->rangeRealisations[] = $rangeRealisation;
+            $rangeRealisation->setUserWorkStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRangeRealisation(RangeRealisation $rangeRealisation): self
+    {
+        if ($this->rangeRealisations->removeElement($rangeRealisation)) {
+            // set the owning side to null (unless already changed)
+            if ($rangeRealisation->getUserWorkStation() === $this) {
+                $rangeRealisation->setUserWorkStation(null);
+            }
+        }
+
+        return $this;
     }
 
 }

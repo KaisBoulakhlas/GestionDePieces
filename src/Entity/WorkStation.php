@@ -41,6 +41,13 @@ class WorkStation
      */
     private $operations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Realisation::class, mappedBy="workstation")
+     */
+    private $realisations;
+
+
+
 
 
     public function __construct()
@@ -48,6 +55,7 @@ class WorkStation
         $this->machines = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->operations = new ArrayCollection();
+        $this->realisations = new ArrayCollection();
 
     }
 
@@ -143,5 +151,35 @@ class WorkStation
     public function __toString()
     {
         return $this->libelle;
+    }
+
+    /**
+     * @return Collection|Realisation[]
+     */
+    public function getRealisations(): Collection
+    {
+        return $this->realisations;
+    }
+
+    public function addRealisation(Realisation $realisation): self
+    {
+        if (!$this->realisations->contains($realisation)) {
+            $this->realisations[] = $realisation;
+            $realisation->setWorkstation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRealisation(Realisation $realisation): self
+    {
+        if ($this->realisations->removeElement($realisation)) {
+            // set the owning side to null (unless already changed)
+            if ($realisation->getWorkstation() === $this) {
+                $realisation->setWorkstation(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RealisationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Time;
@@ -26,10 +28,8 @@ class Realisation
     private $libelle;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="time")
      * @Assert\NotBlank()
-     * @Assert\Time
-     * @var time A "H:i:s" formatted value
      */
     private $time;
 
@@ -51,6 +51,17 @@ class Realisation
      */
     private $machine;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=RangeRealisation::class, inversedBy="realisations")
+     */
+    private $rangeRealisation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Workstation::class, inversedBy="realisations")
+     */
+    private $workstation;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,19 +72,19 @@ class Realisation
         return $this->libelle;
     }
 
-    public function setLibelle(string $libelle): self
+    public function setLibelle(string $libelle = null): self
     {
         $this->libelle = $libelle;
 
         return $this;
     }
 
-    public function getTime(): Time
+    public function getTime(): \DateTime
     {
         return $this->time;
     }
 
-    public function setTime(Time $time): self
+    public function setTime(\DateTime $time = null): self
     {
         $this->time = $time;
 
@@ -115,5 +126,30 @@ class Realisation
 
         return $this;
     }
+
+    public function getRangeRealisation(): ?RangeRealisation
+    {
+        return $this->rangeRealisation;
+    }
+
+    public function setRangeRealisation(?RangeRealisation $rangeRealisation): self
+    {
+        $this->rangeRealisation = $rangeRealisation;
+
+        return $this;
+    }
+
+    public function getWorkstation(): ?Workstation
+    {
+        return $this->workstation;
+    }
+
+    public function setWorkstation(?Workstation $workstation): self
+    {
+        $this->workstation = $workstation;
+
+        return $this;
+    }
+
 
 }

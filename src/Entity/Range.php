@@ -42,9 +42,15 @@ class Range
      */
     private $piece;
 
+    /**
+     * @ORM\OneToMany(targetEntity=RangeRealisation::class, mappedBy="range")
+     */
+    private $rangeRealisations;
+
     public function __construct()
     {
         $this->operations = new ArrayCollection();
+        $this->rangeRealisations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,5 +130,35 @@ class Range
     public function __toString()
     {
         return $this->libelle;
+    }
+
+    /**
+     * @return Collection|RangeRealisation[]
+     */
+    public function getRangeRealisations(): Collection
+    {
+        return $this->rangeRealisations;
+    }
+
+    public function addRangeRealisation(RangeRealisation $rangeRealisation): self
+    {
+        if (!$this->rangeRealisations->contains($rangeRealisation)) {
+            $this->rangeRealisations[] = $rangeRealisation;
+            $rangeRealisation->setRange($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRangeRealisation(RangeRealisation $rangeRealisation): self
+    {
+        if ($this->rangeRealisations->removeElement($rangeRealisation)) {
+            // set the owning side to null (unless already changed)
+            if ($rangeRealisation->getRange() === $this) {
+                $rangeRealisation->setRange(null);
+            }
+        }
+
+        return $this;
     }
 }

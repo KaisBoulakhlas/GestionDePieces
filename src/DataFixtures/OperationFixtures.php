@@ -20,7 +20,6 @@ class OperationFixtures extends Fixture implements DependentFixtureInterface
          $operation->setTime(new \DateTime("00:30:00"));
          $operation->setMachine($this->getReference(MachineFixtures::MACHINE_REFERENCE));
          $operation->setWorkStation($this->getReference(WorkStationFixtures::WORKSTATION_REFERENCE4));
-         $operation->setUserWorkStation($this->getReference(UserFixtures::USER_REFERENCE3));
          $manager->persist($operation);
 
          $operation2 = new Operation();
@@ -29,7 +28,6 @@ class OperationFixtures extends Fixture implements DependentFixtureInterface
          $operation2->setTime(new \DateTime("00:15:00"));
          $operation2->setMachine($this->getReference(MachineFixtures::MACHINE_REFERENCE2));
          $operation2->setWorkStation($this->getReference(WorkStationFixtures::WORKSTATION_REFERENCE2));
-         $operation2->setUserWorkStation($this->getReference(UserFixtures::USER_REFERENCE5));
          $manager->persist($operation2);
 
          $manager->flush();

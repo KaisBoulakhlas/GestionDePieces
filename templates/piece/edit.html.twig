@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une pièce{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Modifier une pièce</h1>
+        <hr/>
+        <div class="container form-edit-piece">
+            {{ form_start(form_edit_piece) }}
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ form_row(form_edit_piece.libelle) }}
+                </div>
+                <div class="form-group col-md-1 ml-2">
+                    {{ form_row(form_edit_piece.quantity) }}
+                </div>
+                <div class="form-group col-md-3">
+                    {{ form_row(form_edit_piece.type) }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4 form_piece_provider" hidden>
+                    {{ form_row(form_edit_piece.provider) }}
+                </div>
+                <div class="form-group col-md-2 form_piece_price_catalog" hidden>
+                    {{ form_row(form_edit_piece.priceCatalogue) }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 form_piece_range" hidden>
+                    {{ form_row(form_edit_piece.range) }}
+                </div>
+                <div class="form-group col-md-2 form_piece_price" hidden>
+                    {{ form_row(form_edit_piece.price) }}
+                </div>
+            </div>
+            <div class="form-group col-md-4 form-pieces-children" hidden>
+                {% for piece in form_edit_piece.piecesChildren  %}
+                    {% if(piece.vars.value in pieceChildrenId)  %}
+                        {{ form_row(piece,{'attr': {'checked': 'checked'}}) }}
+                    {% else %}
+                        {{ form_row(piece) }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="form-row">
+                <button class="btn btn-outline-warning" type="submit" style="margin-left:5px;">{{ button|default('Modifier')}}</button>
+            </div>
+            {{ form_end(form_edit_piece) }}
+        </div>
+    </div>
+
+{% endblock %}

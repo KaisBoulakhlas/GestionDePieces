@@ -33,8 +33,8 @@ class Piece
     private $quantity;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="decimal", nullable=true)
+     *
      */
     private $price;
 
@@ -45,20 +45,19 @@ class Piece
     private $type;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="decimal", nullable=true)
      */
     private $priceCatalogue;
 
     /**
      * @ORM\OneToOne(targetEntity=Range::class, inversedBy="piece", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $range;
 
     /**
      * @ORM\ManyToOne(targetEntity=Provider::class, inversedBy="pieces")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $provider;
 
@@ -284,6 +283,11 @@ class Piece
         $this->estimateLine = $estimateLine;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->libelle;
     }
 
 }
