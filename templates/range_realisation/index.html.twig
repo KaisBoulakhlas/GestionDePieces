@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réalisations d'opération{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center mb-5">
+                <h1 class="heading-section"><i class="material-icons" >settings</i> Réalisation d'opération de la gamme</h1>
+                <a href="{{ path('home') }}" class="btn btn-sm btn-outline-primary w-25 mt-3"><i class="material-icons" >arrow_back</i></a>
+            </div>
+        </div>
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                {% if type == 'success_rangeRealisation_realisation_delete' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if type == 'success_rangeRealisation_realisation_edit' %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        <hr class="border-dark"/>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-wrap table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="text-center">
+                        <tr>
+                            <th></th>
+                            <th>Libellé</th>
+                            <th>Durée</th>
+                            <th>Poste de travail</th>
+                            <th>Machine</th>
+                            <th colspan="2">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        {% for realisation in realisations %}
+                            <tr>
+                                <th scope="row">{{ realisation.id }}</th>
+                                <td>{{ realisation.libelle }}</td>
+                                <td>{{ realisation.time|date('H:i:s') }}</td>
+                                <td>{{ realisation.workStation.libelle}}</td>
+                                <td>{{ realisation.machine.libelle }}</td>
+                                <td>
+                                    <a href="{{ path('range_realisation.realisation.edit', {id: rangeRealisation.id, realisationId: realisation.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >edit</i></a>
+                                </td>
+                                <td>
+                                    {% include('realisation/_delete_form.html.twig') %}
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

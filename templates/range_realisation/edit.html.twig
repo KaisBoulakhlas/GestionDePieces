@@ -1,0 +1,29 @@
+<div class="modal fade" id="editRangeRealisationModal{{ rangeRealisation.id }}" data-whatever="{{ rangeRealisation.id }}" tabindex="-1" role="dialog"  aria-labelledby="editRangeRealisationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="POST" id="edit_realisation_range{{ rangeRealisation.id }}" data-whatever="{{ rangeRealisation.id }}">
+                {{ form_start(form)}}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editRangeRealisationModalLabel">Modifier une réalisation de gamme</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-10">
+                            {{
+                            form_row(form.userWorkstation)
+                            }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-warning">Modifier</button>
+                </div>
+                {{ form_end(form) }}
+            </form>
+        </div>
+    </div>
+</div>

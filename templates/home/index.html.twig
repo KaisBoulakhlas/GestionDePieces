@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mt-5">
-        <h1 class="mb-5">Tableau de bord - Atelier</h1>
+        <h1 class="mb-5">Tableau de bord - Atelier <i class="material-icons" >store</i></h1>
         {% for type, messages in app.flashes %}
             {% for message in messages %}
                 {% if type == 'success_range_delete' %}
@@ -22,8 +22,25 @@
                         {{ message }}
                     </div>
                 {% endif %}
+                {% if type == 'success_range_realisation_edit' %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if type == 'success_range_realisation_delete' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if type == 'success_range_realisation_new' %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
             {% endfor %}
         {% endfor %}
+        <hr class="border-dark"/>
+        <br>
         <div class="accordion" id="accordionExample">
             <div class="card">
                 <a class="btn btn-primary rounded-0" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -38,13 +55,10 @@
                         {{ render(controller('App\\Controller\\HomeController::new')) }}
                         <!-- Button trigger modal -->
                         <button type="button" class="btn mb-3 btn-outline-primary" data-toggle="modal" data-target="#addRangeModal">
-                            <div class="form-row">
+                            <span class="form-row">
                                 <i class="material-icons" >add</i>Gammes
-                            </div>
-
+                            </span>
                         </button>
-
-
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover rounded mw-100">
                                 <thead class="text-center">
@@ -52,7 +66,8 @@
                                     <th></th>
                                     <th>Libellé</th>
                                     <th>Opérations</th>
-                                    <th colspan="3">Actions</th>
+                                    <th colspan="2">Actions</th>
+                                    <th>Réalisation</th>
                                 </tr>
                                 </thead>
                                 <tbody class="text-center">
@@ -69,6 +84,9 @@
                                         </td>
                                         <td>
                                             {% include('home/_delete_form.html.twig') %}
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('range.realisation.add', {'id': range.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-success">Réaliser</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -88,7 +106,41 @@
                 </a>
                 <div id="collapseTwo" class="collapse " aria-labelledby="headingTwo" data-parent="#accordionExample">
                     <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover rounded mw-100">
+                                <thead class="text-center">
+                                <tr>
+                                    <th></th>
+                                    <th>Date</th>
+                                    <th>Responsable</th>
+                                    <th>Réalisations</th>
+                                    <th colspan="2">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                {% for rangeRealisation in rangeRealisations %}
+                                    <tr>
+                                        <td>{{ rangeRealisation.id }}</td>
+                                        <td>{{ rangeRealisation.date | date('d/m/Y H:i') }}</td>
+                                        <td id="range_realisation_userworkstation">{{ rangeRealisation.userWorkStation }}</td>
+                                        <td>
+                                            <a href="{{ path('range.realisations.index', {id: rangeRealisation.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >visibility</i></a>
+                                        </td>
+                                        <td>
+                                            {{ render(controller('App\\Controller\\RangeRealisationController::edit', {'id': rangeRealisation.id })) }}
+                                            <a href="{{ path('range.realisation.edit', {'id': rangeRealisation.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary" data-toggle="modal" data-target="#editRangeRealisationModal{{ rangeRealisation.id }}"><i class="material-icons" >edit</i></a>
+                                        </td>
+                                        <td>
+                                            {% include('range_realisation/_delete_form.html.twig') %}
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr><td colspan="6">Aucunes réalisations de gammes.</td></tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -3,12 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Range;
-use App\Entity\User;
-use App\Entity\WorkStation;
 use App\Form\RangeType;
-use App\Repository\OperationRepository;
+use App\Repository\RangeRealisationRepository;
 use App\Repository\RangeRepository;
-use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ROLE_OUVRIER")
+ **/
 class HomeController extends AbstractController
 {
     protected $em;
@@ -28,14 +29,17 @@ class HomeController extends AbstractController
     /**
      * @Route("/home", name="home")
      * @param RangeRepository $rangeRepository
+     * @param RangeRealisationRepository $rangeRealisationRepository
      * @return Response
      */
-    public function index(RangeRepository $rangeRepository): Response
+    public function index(RangeRepository $rangeRepository,RangeRealisationRepository $rangeRealisationRepository): Response
     {
 
         $ranges = $rangeRepository->findBy(array(), array('id' => 'asc'));
+        $rangeRealisations = $rangeRealisationRepository->findAll();
         return $this->render('home/index.html.twig', [
             'ranges' => $ranges,
+            'rangeRealisations' => $rangeRealisations,
         ]);
     }
 
