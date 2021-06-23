@@ -1,4 +1,4 @@
-<div class="modal fade" id="showCompositionPieceModal{{ piece.id }}" data-whatever="{{ piece.id }}" tabindex="-1" role="dialog"  aria-labelledby="showCompositionPieceModalLabel" aria-hidden="true">
+<div class="modal fade" tabindex="-1" role="dialog"  aria-labelledby="showCompositionPieceModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
                 <div class="modal-header text-center">
@@ -7,7 +7,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            <p class="text-muted mt-1">Nombre de pièces composantes: {{  piece.piecesChildren|length }}</p>
+            <p class="text-muted mt-1 text-center">Nombre de pièces composantes: {{  piece.piecesChildren|length }}</p>
                 <div class="modal-body">
                     {% for pieceChildren in piece.piecesChildren %}
                         <div class="card">
@@ -24,7 +24,7 @@
                         </div>
                         <br>
                     {% else %}
-                       <p>Cette pièce n'a aucune composition.</p>
+                       <p class="text-center">Cette pièce n'a aucune composition.</p>
                     {% endfor %}
                 </div>
                 <div class="modal-footer">

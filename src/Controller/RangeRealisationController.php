@@ -6,7 +6,6 @@ use App\Entity\Range;
 use App\Entity\RangeRealisation;
 use App\Entity\Realisation;
 use App\Form\RangeRealisationType;
-use App\Repository\OperationRepository;
 use App\Repository\RangeRealisationRepository;
 use App\Repository\RealisationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +15,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Time;
 
 /**
  * @IsGranted("ROLE_OUVRIER")
@@ -63,7 +61,6 @@ class RangeRealisationController extends AbstractController
                 $realisation->setTime($operation->getTime());
                 $realisation->setWorkstation($operation->getWorkStation());
                 $realisation->setMachine($operation->getMachine());
-                $realisation->setUserWorkStation($operation->getWorkStation()->getUserWorkstation());
                 $rangeRealisation->addRealisation($realisation);
             }
         }
@@ -87,12 +84,15 @@ class RangeRealisationController extends AbstractController
     {
         $em = $this->em;
         $rangeRealisation = $rangeRealisationRepository->find($id);
-        $form = $this->createForm(RangeRealisationType::class, $rangeRealisation);
+        $form = $this->createForm(RangeRealisationType::class, $rangeRealisation, [
+            'action' => $this->generateUrl('range.realisation.edit', ['id' => $id])
+        ]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->flush();
             $this->addFlash('success_range_realisation_edit', "La réalisation de gamme ". $rangeRealisation->getId() . " a été modifiée avec succès.");
-        };
+            return $this->redirectToRoute('home');
+        }
 
         return $this->render('range_realisation/edit.html.twig', [
             'rangeRealisation' => $rangeRealisation,

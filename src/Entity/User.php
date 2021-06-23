@@ -60,15 +60,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $realisations;
 
-    /**
-     * @ORM\OneToMany(targetEntity=WorkStation::class, mappedBy="userWorkstation")
-     */
-    private $workStations;
 
     /**
      * @ORM\OneToMany(targetEntity=RangeRealisation::class, mappedBy="userWorkStation")
      */
     private $rangeRealisations;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=WorkStation::class, mappedBy="users")
+     */
+    private $workstations;
 
 
     public function __construct()
@@ -77,6 +78,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->realisations = new ArrayCollection();
         $this->workStations = new ArrayCollection();
         $this->rangeRealisations = new ArrayCollection();
+        $this->workstations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -245,36 +247,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|WorkStation[]
-     */
-    public function getWorkStations(): Collection
-    {
-        return $this->workStations;
-    }
-
-    public function addWorkStation(WorkStation $workStation): self
-    {
-        if (!$this->workStations->contains($workStation)) {
-            $this->workStations[] = $workStation;
-            $workStation->setUserWorkstation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWorkStation(WorkStation $workStation): self
-    {
-        if ($this->workStations->removeElement($workStation)) {
-            // set the owning side to null (unless already changed)
-            if ($workStation->getUserWorkstation() === $this) {
-                $workStation->setUserWorkstation(null);
-            }
-        }
-
-        return $this;
-    }
-
 
 
     public function __toString() : string
@@ -308,6 +280,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $rangeRealisation->setUserWorkStation(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WorkStation[]
+     */
+    public function getWorkstations(): Collection
+    {
+        return $this->workstations;
+    }
+
+    public function addWorkstation(WorkStation $workstation): self
+    {
+        if (!$this->workstations->contains($workstation)) {
+            $this->workstations[] = $workstation;
+        }
+
+        return $this;
+    }
+
+    public function removeWorkstation(WorkStation $workstation): self
+    {
+        $this->workstations->removeElement($workstation);
 
         return $this;
     }

@@ -19,6 +19,7 @@ class RangeRepository extends ServiceEntityRepository
         parent::__construct($registry, Range::class);
     }
 
+
     // /**
     //  * @return Range[] Returns an array of Range objects
     //  */

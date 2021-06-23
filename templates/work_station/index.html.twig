@@ -30,13 +30,11 @@
         {% endfor %}
         <hr class="border-dark"/>
         <br>
-        {{ render(controller('App\\Controller\\WorkStationController::new')) }}
-        <!-- Button trigger modal -->
-        <button type="button" class="btn mb-3 btn-outline-primary" data-toggle="modal" data-target="#addWorkStationModal">
+        <a type="button" data-url="{{ path('workstation.add') }}" class="btn mb-3 btn-outline-primary" data-toggle="modal" data-target="#modalGeneric">
                 <span class="form-row">
                     <i class="material-icons" >add</i>Postes de travail
                 </span>
-        </button>
+        </a>
         <div class="row">
             <div class="col-md-12">
                 <div class="table-wrap table-responsive">
@@ -45,7 +43,7 @@
                         <tr>
                             <th></th>
                             <th>Libellé</th>
-                            <th>Utilisateur</th>
+                            <th>Utilisateur(s)</th>
                             <th>Machines</th>
                             <th colspan="2">Actions</th>
                         </tr>
@@ -55,15 +53,20 @@
                             <tr>
                                 <th scope="row">{{ workstation.id }}</th>
                                 <td>{{ workstation.libelle }}</td>
-                                <td>{{ workstation.userWorkstation }}</td>
                                 <td>
-                                    {{ render(controller('App\\Controller\\WorkStationController::showMachines', {'id': workstation.id })) }}
-                                    <a type="button" href="{{ path('workstation.machines', {id : workstation.id}) }}" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#showMachinesByWorkstationModal{{ workstation.id }}"><i class="material-icons" >personal_video</i></a>
-                                </td
-                                >
+                                    <a type="button" data-url="{{ path('workstation.users', {id : workstation.id}) }}" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modalGeneric">
+                                        <i class="material-icons" >
+                                            <span class="material-icons-outlined">
+                                                supervisor_account
+                                            </span>
+                                        </i>
+                                    </a>
+                                </td>
                                 <td>
-                                    {{ render(controller('App\\Controller\\WorkStationController::edit', {'id': workstation.id })) }}
-                                    <a href="{{ path('workstation.edit', {'id': workstation.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary" data-toggle="modal" data-target="#editWorkStationModal{{ workstation.id }}"><i class="material-icons" >edit</i></a>
+                                    <a type="button" data-url="{{ path('workstation.machines', {id : workstation.id}) }}" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modalGeneric"><i class="material-icons" >personal_video</i></a>
+                                </td>
+                                <td>
+                                    <a data-url="{{ path('workstation.edit', {'id': workstation.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary" data-toggle="modal" data-target="#modalGeneric"><i class="material-icons" >edit</i></a>
                                 </td>
                                 <td>
                                     {% include('work_station/_delete_form.html.twig') %}

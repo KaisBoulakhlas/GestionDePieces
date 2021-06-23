@@ -1,7 +1,6 @@
-<div class="modal fade" id="editRangeRealisationModal{{ rangeRealisation.id }}" data-whatever="{{ rangeRealisation.id }}" tabindex="-1" role="dialog"  aria-labelledby="editRangeRealisationModalLabel" aria-hidden="true">
+<div class="modal fade" tabindex="-1" role="dialog"  aria-labelledby="editRangeRealisationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="POST" id="edit_realisation_range{{ rangeRealisation.id }}" data-whatever="{{ rangeRealisation.id }}">
                 {{ form_start(form)}}
                 <div class="modal-header">
                     <h5 class="modal-title" id="editRangeRealisationModalLabel">Modifier une réalisation de gamme</h5>
@@ -13,7 +12,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-10">
                             {{
-                            form_row(form.userWorkstation)
+                                form_row(form.userWorkstation)
                             }}
                         </div>
                     </div>
@@ -23,7 +22,6 @@
                     <button type="submit" class="btn btn-warning">Modifier</button>
                 </div>
                 {{ form_end(form) }}
-            </form>
         </div>
     </div>
 </div>

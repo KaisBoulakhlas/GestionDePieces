@@ -6,9 +6,10 @@ use App\Entity\Machine;
 use App\Entity\Realisation;
 use App\Entity\User;
 use App\Entity\WorkStation;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,8 +20,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RealisationType extends AbstractType
 {
+    protected $em;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $workers = $this->em->getRepository(User::class)->findUsersByRole('ROLE_OUVRIER');
         $builder
             ->add('libelle', TextType::class, array(
                 'label' => 'Libellé :',
@@ -31,12 +40,11 @@ class RealisationType extends AbstractType
                 'label' => 'Durée :',
                 'with_seconds' => true,
             ))
-            ->add('userWorkStation', EntityType::class, [
+            ->add('userWorkStation', ChoiceType::class, [
                 'label' => 'Ouvrier :',
-                'placeholder' => 'Sélectionner un utilisateur :',
-                'class' => 'App\Entity\User',
-                'multiple' => false,
-                'mapped' => false,
+                'placeholder' => 'Sélectionner un ouvrier ...',
+                'choices' => $workers,
+                'choice_label' => 'username',
                 'required' => false
             ]);
 
@@ -60,13 +68,16 @@ class RealisationType extends AbstractType
                 if ($machine) {
                     // On récupère le poste de travail  et l'utilisateur
                     $workstation = $machine->getWorkStation();
-                    $user = $workstation->getUserWorkstation();
+                    $users = $workstation->getUsers();
 
                     // On crée les 2 champs supplémentaires
-                    $this->addWorkStationField($form, $user);
+                    foreach($users as $user){
+                        $this->addWorkStationField($form, $user);
+                    }
+
                     $this->addMachineField($form, $workstation);
                     // On set les données
-                    $form->get('userWorkStation')->setData($user);
+                    $form->get('userWorkStation')->setData($form->get('userWorkStation')->getData());
                     $form->get('workstation')->setData($workstation);
                 } else {
                     // On crée les 2 champs en les laissant vide (champs utilisé pour le JavaScript)

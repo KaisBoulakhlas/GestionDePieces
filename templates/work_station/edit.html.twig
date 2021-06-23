@@ -1,7 +1,6 @@
-<div class="modal fade" id="editWorkStationModal{{ workstation.id }}" data-whatever="{{ workstation.id }}" tabindex="-1" role="dialog"  aria-labelledby="editWorkStationModalLabel" aria-hidden="true">
+<div class="modal fade"  tabindex="-1" role="dialog"  aria-labelledby="editWorkStationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="POST" id="edit_workstation{{ workstation.id }}" data-whatever="{{ workstation.id }}">
                 {{ form_start(form_workstation)}}
                 <div class="modal-header">
                     <h5 class="modal-title" id="editWorkStationModalLabel">Modifier un poste de travail </h5>
@@ -20,7 +19,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-10">
                             {{
-                                form_row(form_workstation.userWorkstation)
+                                form_row(form_workstation.users)
                             }}
                         </div>
                     </div>
@@ -30,7 +29,6 @@
                     <button type="submit" class="btn btn-warning">Modifier</button>
                 </div>
                 {{ form_end(form_workstation) }}
-            </form>
         </div>
     </div>
 </div>

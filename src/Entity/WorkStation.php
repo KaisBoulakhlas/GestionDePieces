@@ -31,10 +31,6 @@ class WorkStation
      */
     private $machines;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="workStations")
-     */
-    private $userWorkstation;
 
     /**
      * @ORM\OneToMany(targetEntity=Operation::class, mappedBy="workStation", orphanRemoval=true)
@@ -46,8 +42,10 @@ class WorkStation
      */
     private $realisations;
 
-
-
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="workstations")
+     */
+    private $users;
 
 
     public function __construct()
@@ -102,18 +100,6 @@ class WorkStation
                 $machine->setWorkStation(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getUserWorkstation(): ?User
-    {
-        return $this->userWorkstation;
-    }
-
-    public function setUserWorkstation(?User $userWorkstation): self
-    {
-        $this->userWorkstation = $userWorkstation;
 
         return $this;
     }
@@ -178,6 +164,33 @@ class WorkStation
             if ($realisation->getWorkstation() === $this) {
                 $realisation->setWorkstation(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addWorkstation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeWorkstation($this);
         }
 
         return $this;

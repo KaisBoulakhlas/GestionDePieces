@@ -1,9 +1,6 @@
-<!-- Modal -->
-
-<div class="modal fade" id="editRangeModal{{ range.id }}" data-whatever="{{ range.id }}" tabindex="-1" role="dialog"  aria-labelledby="editRangeModalLabel" aria-hidden="true">
+<div class="modal fade" tabindex="-1" role="dialog"  aria-labelledby="editRangeModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="POST" id="edit_range{{ range.id }}" data-whatever="{{ range.id }}">
                 {{ form_start(form)}}
                 <div class="modal-header">
                     <h5 class="modal-title" id="editRangeModalLabel">Modifier une gamme</h5>
@@ -32,7 +29,6 @@
                     <button type="submit" class="btn btn-warning">Modifier</button>
                 </div>
                 {{ form_end(form) }}
-            </form>
         </div>
     </div>
 </div>

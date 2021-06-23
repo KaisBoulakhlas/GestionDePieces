@@ -52,13 +52,11 @@
                 </a>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
-                        {{ render(controller('App\\Controller\\HomeController::new')) }}
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn mb-3 btn-outline-primary" data-toggle="modal" data-target="#addRangeModal">
+                        <a type="button" data-url="{{ path('home.range.add') }}" class="btn mb-3 btn-outline-primary" data-toggle="modal" data-target="#modalGeneric">
                             <span class="form-row">
                                 <i class="material-icons" >add</i>Gammes
                             </span>
-                        </button>
+                        </a>
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover rounded mw-100">
                                 <thead class="text-center">
@@ -66,6 +64,7 @@
                                     <th></th>
                                     <th>Libellé</th>
                                     <th>Opérations</th>
+                                    <th>Responsable</th>
                                     <th colspan="2">Actions</th>
                                     <th>Réalisation</th>
                                 </tr>
@@ -79,8 +78,10 @@
                                             <a href="{{ path('range.operations.index', {id: range.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >visibility</i></a>
                                         </td>
                                         <td>
-                                            {{ render(controller('App\\Controller\\HomeController::edit', {'id': range.id })) }}
-                                            <a href="{{ path('home.range.edit', {'id': range.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary" data-toggle="modal" data-target="#editRangeModal{{ range.id }}"><i class="material-icons" >edit</i></a>
+                                            {{ range.userWorkstation }}
+                                        </td>
+                                        <td>
+                                            <a data-url="{{ path('home.range.edit', {'id': range.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary" data-toggle="modal" data-target="#modalGeneric"><i class="material-icons" >edit</i></a>
                                         </td>
                                         <td>
                                             {% include('home/_delete_form.html.twig') %}
@@ -123,13 +124,12 @@
                                     <tr>
                                         <td>{{ rangeRealisation.id }}</td>
                                         <td>{{ rangeRealisation.date | date('d/m/Y H:i') }}</td>
-                                        <td id="range_realisation_userworkstation">{{ rangeRealisation.userWorkStation }}</td>
+                                        <td>{{ rangeRealisation.userWorkStation }}</td>
                                         <td>
                                             <a href="{{ path('range.realisations.index', {id: rangeRealisation.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >visibility</i></a>
                                         </td>
                                         <td>
-                                            {{ render(controller('App\\Controller\\RangeRealisationController::edit', {'id': rangeRealisation.id })) }}
-                                            <a href="{{ path('range.realisation.edit', {'id': rangeRealisation.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary" data-toggle="modal" data-target="#editRangeRealisationModal{{ rangeRealisation.id }}"><i class="material-icons" >edit</i></a>
+                                            <a data-url="{{ path('range.realisation.edit', {id: rangeRealisation.id}) }}" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modalGeneric"><i class="material-icons" >edit</i></a>
                                         </td>
                                         <td>
                                             {% include('range_realisation/_delete_form.html.twig') %}

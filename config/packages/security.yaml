@@ -40,6 +40,7 @@ security:
         - { path: ^/pieces, roles: [IS_AUTHENTICATED_FULLY, ROLE_OUVRIER] }
         - { path: ^/range, roles: [IS_AUTHENTICATED_FULLY, ROLE_OUVRIER] }
         - { path: ^/workstation, roles: [IS_AUTHENTICATED_FULLY, ROLE_OUVRIER] }
+        - { path: ^/machines, roles: [ IS_AUTHENTICATED_FULLY, ROLE_OUVRIER ] }
         - { path: ^/commercial, roles: [IS_AUTHENTICATED_FULLY, ROLE_COMMERCIAL] }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

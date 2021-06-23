@@ -60,8 +60,10 @@ class RealisationController extends AbstractController
     /**
      * @Route("rangeRealisation/{id}/delete/{realisationId}", name="rangeRealisation.realisation.delete")
      * @param $id
+     * @param $realisationId
      * @param Request $request
      * @param RangeRealisationRepository $rangeRealisationRepository
+     * @param RealisationRepository $realisationRepository
      * @return RedirectResponse
      */
     public function delete($id, $realisationId, Request $request, RangeRealisationRepository $rangeRealisationRepository, RealisationRepository $realisationRepository)

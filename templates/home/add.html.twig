@@ -1,8 +1,7 @@
 <!-- Modal -->
-<div class="modal fade" id="addRangeModal" tabindex="-1" role="dialog" aria-labelledby="addRangeModalLabel" aria-hidden="true">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addRangeModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="POST" id="new_range">
             {{ form_start(form)}}
             <div class="modal-header">
                 <h5 class="modal-title" id="addRangeModalLabel">Ajouter une gamme</h5>
@@ -33,7 +32,6 @@
                 <button type="submit" class="btn btn-primary">Ajouter</button>
             </div>
             {{ form_end(form) }}
-            </form>
         </div>
     </div>
 </div>

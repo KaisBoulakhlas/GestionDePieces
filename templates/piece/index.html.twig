@@ -57,8 +57,7 @@
                                 <td>{{ piece.type }}</td>
                                 <td class="col-3">{{ piece.priceCatalogue ? piece.priceCatalogue|format_currency('EUR', {rounding_mode: 'floor'}) :  "Aucun prix d'achat" }} </td>
                                 <td>
-                                    {{ render(controller('App\\Controller\\PieceController::showComposition', {'id': piece.id })) }}
-                                    <a type="button" href="{{ path('piece.composition', {id : piece.id}) }}" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#showCompositionPieceModal{{ piece.id }}"><i class="material-icons" >construction</i></a>
+                                    <a type="button" data-url="{{ path('piece.composition', {id : piece.id}) }}" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modalGeneric"><i class="material-icons" >construction</i></a>
                                 </td>
                                 <td>
                                     <a href="{{ path('piece.edit', {id : piece.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >edit</i></a>

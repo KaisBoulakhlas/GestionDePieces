@@ -11,15 +11,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WorkStationType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('libelle')
-            ->add('userWorkstation',EntityType::class, array(
+            ->add('libelle', TextType::class, array(
+                'label' => 'Libellé :',
+            ))
+            ->add('users',EntityType::class, array(
                 'class' => 'App\Entity\User',
-                'label' => 'Responsable:',
+                'label' => 'Utilisateur:',
                 'placeholder' => 'Sélectionner un utilisateur ...',
                 'required' => true,
+                'multiple' => true,
             ))
         ;
     }

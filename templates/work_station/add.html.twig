@@ -1,8 +1,6 @@
-<!-- Modal -->
-<div class="modal fade" id="addWorkStationModal" tabindex="-1" role="dialog" aria-labelledby="addWorkStationModalLabel" aria-hidden="true">
+<div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="addWorkStationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="POST" id="new_workstation">
                 {{ form_start(form_add_workstation)}}
                 <div class="modal-header">
                     <h5 class="modal-title" id="addWorkStationModalLabel">Ajouter un poste de travail</h5>
@@ -22,7 +20,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             {{
-                                form_row(form_add_workstation.userWorkstation)
+                                form_row(form_add_workstation.users)
                             }}
                         </div>
                     </div>
@@ -33,7 +31,6 @@
                     <button type="submit" class="btn btn-primary">Ajouter</button>
                 </div>
                 {{ form_end(form_add_workstation) }}
-            </form>
         </div>
     </div>
 </div>

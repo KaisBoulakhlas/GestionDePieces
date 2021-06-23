@@ -37,6 +37,7 @@
                             <th>Durée</th>
                             <th>Poste de travail</th>
                             <th>Machine</th>
+                            <th>Ouvrier</th>
                             <th colspan="2">Actions</th>
                         </tr>
                         </thead>
@@ -48,6 +49,7 @@
                                 <td>{{ realisation.time|date('H:i:s') }}</td>
                                 <td>{{ realisation.workStation.libelle}}</td>
                                 <td>{{ realisation.machine.libelle }}</td>
+                                <td>{{ realisation.userWorkStation }}</td>
                                 <td>
                                     <a href="{{ path('range_realisation.realisation.edit', {id: rangeRealisation.id, realisationId: realisation.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >edit</i></a>
                                 </td>

@@ -84,8 +84,8 @@ class UserFixtures extends Fixture
         $ouvrier7->setPassword($this->encoder->hashPassword($ouvrier7, 'azezer'));
         $ouvrier7->setUsername("Test2");
         $ouvrier7->setRoles(['ROLE_OUVRIER']);
-         $this->setReference(self::USER_REFERENCE7, $ouvrier7);
-         $manager->persist($ouvrier7);
+        $this->setReference(self::USER_REFERENCE7, $ouvrier7);
+        $manager->persist($ouvrier7);
 
          $commercial = new User();
          $commercial->setEmail("lorisquetglas@gmail.com");

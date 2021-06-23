@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Range;
+use App\Entity\User;
 use App\Form\RangeType;
 use App\Repository\RangeRealisationRepository;
 use App\Repository\RangeRepository;
@@ -43,6 +44,16 @@ class HomeController extends AbstractController
         ]);
     }
 
+    public function findUsersByRole($role)
+    {
+        $workers = [];
+        foreach ($this->em->getRepository(User::class)->findAll() as $user) {
+            if(in_array($role, $user->getRoles())) {
+                array_push($workers, $user);
+            }
+        }
+        return $workers;
+    }
     /**
      * @Route("/home/range/add", name="home.range.add" , methods="GET|POST")
      * @param Request $request
@@ -52,13 +63,16 @@ class HomeController extends AbstractController
     {
         $range = new Range();
         $em = $this->em;
-        $form = $this->createForm(RangeType::class, $range);
+        $ouvriers = $this->findUsersByRole('["ROLE_OUVRIER"]');
+        $form = $this->createForm(RangeType::class, $range, [
+            'action' => $this->generateUrl('home.range.add')
+        ]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($range);
             $em->flush();
             $this->addFlash('success_range_add', "La gamme " . $range->getLibelle() . " a bien été créée avec succès.");
-
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('home/add.html.twig', [
@@ -79,11 +93,14 @@ class HomeController extends AbstractController
     {
         $em = $this->em;
         $range = $rangeRepository->find($id);
-        $form = $this->createForm(RangeType::class, $range);
+        $form = $this->createForm(RangeType::class, $range, [
+            'action' => $this->generateUrl('home.range.edit', ['id' => $id])
+        ]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->flush();
             $this->addFlash('success_range_edit', "La gamme ". $range->getLibelle() . " a été modifiée avec succès.");
+            return $this->redirectToRoute('home');
         };
 
         return $this->render('home/edit.html.twig', [

@@ -35,7 +35,7 @@ class Realisation
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="realisations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $userWorkStation;
 

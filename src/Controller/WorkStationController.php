@@ -48,7 +48,21 @@ class WorkStationController extends AbstractController
     public function showMachines(WorkStation $workStation,WorkStationRepository $workStationRepository): Response
     {
         $workstation = $workStationRepository->findOneBy(['id' => $workStation->getId()]);
-        return $this->render('work_station/show.html.twig', [
+        return $this->render('work_station/show_machines.html.twig', [
+            'workstation' => $workstation
+        ]);
+    }
+
+    /**
+     * @Route("/workstation/{id}/users", name="workstation.users")
+     * @param WorkStation $workStation
+     * @param WorkStationRepository $workStationRepository
+     * @return Response
+     */
+    public function showUsers(WorkStation $workStation,WorkStationRepository $workStationRepository): Response
+    {
+        $workstation = $workStationRepository->findOneBy(['id' => $workStation->getId()]);
+        return $this->render('work_station/show_users.html.twig', [
             'workstation' => $workstation
         ]);
     }
@@ -62,13 +76,19 @@ class WorkStationController extends AbstractController
     {
         $workstation = new WorkStation();
         $em = $this->em;
-        $form = $this->createForm(WorkStationType::class, $workstation);
+        $form = $this->createForm(WorkStationType::class, $workstation, [
+            'action' => $this->generateUrl('workstation.add')
+        ]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $users = $form->get('users')->getData();
+            foreach ($users as $user) {
+                $workstation->addUser($user);
+            }
             $em->persist($workstation);
             $em->flush();
             $this->addFlash('success_workstation_add', "Le poste de travail " . $workstation->getLibelle() . " a bien été créée avec succès.");
-
+            return $this->redirectToRoute('workstation.index');
         }
 
         return $this->render('work_station/add.html.twig', [
@@ -88,11 +108,22 @@ class WorkStationController extends AbstractController
     {
         $em = $this->em;
         $workstation = $workStationRepository->find($id);
-        $form = $this->createForm(WorkStationType::class, $workstation);
+        $form = $this->createForm(WorkStationType::class, $workstation, [
+            'action' => $this->generateUrl('workstation.edit', ['id' => $id])
+        ]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $users = $form->get('users')->getData();
+            foreach ($users as $user) {
+                $workstation->addUser($user);
+            }
+            $usersRemove = array_values(array_diff($workstation->getUsers()->toArray(),$users->toArray()));
+            foreach($usersRemove as $userRemove) {
+                $workstation->removeUser($userRemove);
+            }
             $em->flush();
-            $this->addFlash('success_workstation_edit', "Le poste de travail". $workstation->getLibelle() . " a été modifiée avec succès.");
+            $this->addFlash('success_workstation_edit', "Le poste de travail ". $workstation->getLibelle() . " a été modifiée avec succès.");
+            return $this->redirectToRoute('workstation.index');
         };
 
         return $this->render('work_station/edit.html.twig', [
@@ -116,7 +147,7 @@ class WorkStationController extends AbstractController
         if($this->isCsrfTokenValid('delete' . $workstation->getId(), $request->request->get('_token'))){
             $em->remove($workstation);
             $em->flush();
-            $this->addFlash('success_workstation_delete', "Le poste de travail" . $workstation->getLibelle() . " a bien été supprimée avec succès.");
+            $this->addFlash('success_workstation_delete', "Le poste de travail " . $workstation->getLibelle() . " a bien été supprimée avec succès.");
         }
 
         return $this->redirectToRoute('workstation.index');
