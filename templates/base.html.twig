@@ -30,6 +30,9 @@
                         <li {% if route_name matches '{^work}'%} class="nav-item active" {% else %} class="nav-item" {% endif %}>
                             <a class="nav-link text-white" href="{{ path('workstation.index') }}">Postes de travail</a>
                         </li>
+                        <li {% if route_name matches '{^machine}'%} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+                            <a class="nav-link text-white" href="{{ path('machine.index') }}">Machines</a>
+                        </li>
                     {% endif %}
                     {% if is_granted("ROLE_COMMERCIAL") %}
                         <li class="nav-item">
@@ -47,6 +50,17 @@
                 <a href="{{ path('app_logout') }}" class="btn btn-sm btn-outline-primary text-white" role="button">Se déconnecter</a>
             </form>
         </nav>
+        <div class="modal fade" id="modalGeneric" tabindex="-1" role="dialog" aria-labelledby="modalGenericLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                <div class="modal-content" id="modal-generic-content">
+                    <div class="container p-5 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
     {% block body %}
     {% endblock %}
