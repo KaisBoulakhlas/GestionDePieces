@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Opérations de la gamme {{ range.id }}{% endblock %}
+{% block title %}Opérations{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-7 text-center mb-5">
-            <h1 class="heading-section"><i class="material-icons" >settings</i> Opérations de la gamme {{ range.id }}</h1>
+            <h1 class="heading-section"><i class="material-icons" >settings</i> Opérations</h1>
             <a href="{{ path('home') }}" class="btn btn-sm btn-outline-primary w-25 mt-3"><i class="material-icons" >arrow_back</i></a>
         </div>
     </div>
@@ -31,7 +31,7 @@
     {% endfor %}
     <hr class="border-dark"/>
     <br>
-    <a href="{{ path('range.operation.add', {id: range.id}) }}" class="btn btn-sm btn-outline-primary mb-3"><div class="form-row"><i class="material-icons" >add</i>Opération</div></a>
+    <a href="{{ path('operation.add') }}" class="btn btn-sm btn-outline-primary mb-3"><div class="form-row"><i class="material-icons" >add</i>Opération</div></a>
     <div class="row">
         <div class="col-md-12">
             <div class="table-wrap table-responsive">
@@ -41,6 +41,7 @@
                         <th></th>
                         <th>Libellé</th>
                         <th>Durée</th>
+                        <th>Gamme(s)</th>
                         <th>Poste de travail</th>
                         <th>Machine</th>
                         <th colspan="2">Actions</th>
@@ -52,15 +53,22 @@
                             <th scope="row">{{ operation.id }}</th>
                             <td>{{ operation.libelle }}</td>
                             <td>{{ operation.time|date('H:i:s') }}</td>
+                            <td>
+                                <a type="button" data-url="{{ path('operation.ranges.show', {id : operation.id}) }}" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modalGeneric"><i class="material-icons" >visibility</i></a>
+                            </td>
                             <td>{{ operation.workStation.libelle}}</td>
                             <td>{{ operation.machine.libelle }}</td>
                             <td>
-                                <a href="{{ path('range.operation.edit', {id: range.id, operationId: operation.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >edit</i></a>
+                                <a href="{{ path('operation.edit', {id: operation.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >edit</i></a>
                             </td>
                             <td>
                                 {% include('operation/_delete_form.html.twig') %}
                             </td>
                         </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">Aucunes opérations disponibles.</td>
+                            </tr>
                     {% endfor %}
                     </tbody>
                 </table>

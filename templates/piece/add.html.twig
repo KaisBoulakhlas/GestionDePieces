@@ -9,11 +9,17 @@
         <div class="container">
                 {{ form_start(form) }}
                 <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form_row(form.reference) }}
+                    </div>
+                </div>
+
+                <div class="form-row">
                     <div class="form-group col-md-3">
                         {{ form_row(form.libelle) }}
                     </div>
                     <div class="form-group col-md-1 ml-2">
-                        {{ form_row(form.quantity) }}
+                        {{ form_row(form.quantity, {'attr' : {'min' : 1}}) }}
                     </div>
                     <div class="form-group col-md-3">
                         {{ form_row(form.type) }}
@@ -28,20 +34,28 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-6 form_piece_range" hidden>
-                        {{ form_row(form.range) }}
-                    </div>
                     <div class="form-group col-md-2 form_piece_price" hidden>
                         {{ form_row(form.price) }}
                     </div>
                 </div>
+            <div class="form-row">
                 <div class="col-md-4 form-pieces-children" hidden>
-                        {{ form_row(form.piecesChildren) }}
+
+                        <button type="button" id="add_pieces_used" class="btn btn-outline-success"><span class="form-row"><i class="material-icons" >add</i>Pièces utilisées</span></button>
+
+                    <div id="pieces_useds_collection" style="width:max-content;"
+                         data-prototype="{{ include("piece/_piece_used_form.html.twig", {form: form.pieceUseds.vars.prototype})| e('html_attr') }}"
+                         data-index="{{ form.pieceUseds|length > 0 ? form.pieceUseds|last.vars.name + 1 : 0}}"
+                    >
+
+                    </div>
                 </div>
+            </div>
                 <div class="form-row">
-                    <button class="btn btn-outline-success" type="submit" style="margin-left:5px;">{{ button|default('Ajouter')}}</button>
+                    <button class="btn btn-outline-success" type="submit" style="margin-left:5px;margin-top:30px;">{{ button|default('Ajouter')}}</button>
                 </div>
-                {{ form_end(form) }}
+                {{ form_row(form._token) }}
+            {{ form_end(form, {'render_rest': false}) }}
         </div>
     </div>
 

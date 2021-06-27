@@ -30,10 +30,17 @@ body {
 
 }
 
-#piece_piecesChildren, .form-edit-piece .form-pieces-children{
-    display: grid;
-    grid-template-columns: 191px 138px 231px 200px;
-    grid-auto-flow: row;
+#table_body_pieces td.col-3 {
+    overflow: hidden ;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width:200px;
+}
+
+#table_body_pieces td.col-3:hover {
+    overflow: unset !important;
+    text-overflow: unset !important;
+    white-space: unset !important;
 }
 
 .navbar li > a {

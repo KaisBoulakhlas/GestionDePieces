@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Range;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -33,6 +34,17 @@ class RangeType extends AbstractType
                     'placeholder' => 'Sélectionner un responsable ...',
                     'choice_label' => function ($choice) { return $choice->getUsername(); },
                     'required' => true,
+            ))
+            ->add('piece', EntityType::class, array(
+                'label' => 'Pièce fabriquée :',
+                'class' => 'App\Entity\Piece',
+                'placeholder' => 'Sélectionner une pièce fabriquée ...',
+                'multiple' => false,
+                'query_builder' => function(EntityRepository $entityRepository) {
+                    return $entityRepository->createQueryBuilder('p')
+                        ->where('p.type in (:type)')
+                        ->setParameter(':type',['Livrable','Intermédiaire']);
+                }
             ));
     }
 

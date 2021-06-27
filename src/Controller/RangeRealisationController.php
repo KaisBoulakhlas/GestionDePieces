@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\PieceUsed;
 use App\Entity\Range;
 use App\Entity\RangeRealisation;
 use App\Entity\Realisation;
 use App\Form\RangeRealisationType;
 use App\Repository\RangeRealisationRepository;
 use App\Repository\RealisationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,6 +55,7 @@ class RangeRealisationController extends AbstractController
         $em = $this->em;
         $rangeRealisation = new RangeRealisation();
         $operations = $range->getOperations();
+
         if($operations != null){
             foreach($operations as $operation){
                 $realisation = new Realisation();
@@ -64,6 +67,11 @@ class RangeRealisationController extends AbstractController
                 $rangeRealisation->addRealisation($realisation);
             }
         }
+        if($range->getPiece() != null){
+            $range->getPiece()->setQuantity($range->getPiece()->getQuantity() + 1);
+        }
+
+        $this->setQuantityPiece($range->getPiece()->getPieceUseds()->toArray());
         $rangeRealisation->setRange($range);
         $rangeRealisation->setUserWorkStation($range->getUserWorkstation());
         $em->persist($rangeRealisation);
@@ -71,6 +79,16 @@ class RangeRealisationController extends AbstractController
         $this->addFlash('success_range_realisation_new', "La réalisation de gamme ". $range->getLibelle() . " a été créée avec succès.");
 
         return $this->redirectToRoute('home');
+    }
+
+    private function setQuantityPiece(array $pieceUseds)
+    {
+        /** @var PieceUsed $pieceUsed */
+        foreach($pieceUseds as $pieceUsed){
+            $piece = $pieceUsed->getPiece();
+            $piece->setQuantity($piece->getQuantity() - $pieceUsed->getQuantity());
+            $this->em->persist($piece);
+        }
     }
 
     /**

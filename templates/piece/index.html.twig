@@ -3,7 +3,7 @@
 {% block title %}Pièces de l'atelier{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
+    <div class="mt-5 p-5">
         <div class="row justify-content-center">
             <div class="col-md-6 text-center mb-5">
                 <h2 class="heading-section"><i class="material-icons" >build</i> Pièces de l'atelier</h2>
@@ -39,25 +39,31 @@
                         <tr>
                             <th></th>
                             <th class="col-3">Libellé</th>
-                            <th>Quantité</th>
+                            <th>Stock</th>
                             <th class="col-3">Prix</th>
                             <th class="col-3">Type</th>
                             <th class="col-3">Prix d'achat</th>
+                            <th class="col-6">Gamme</th>
                             <th>Composition</th>
                             <th colspan="2">Actions</th>
                         </tr>
                         </thead>
-                        <tbody class="text-center">
+                        <tbody class="text-center" id="table_body_pieces">
                         {% for piece in pieces %}
                             <tr {% if piece.type == "Matière première" %} class="text-success" {% elseif piece.type == "Achetée" %} class="text-primary" {% elseif piece.type == "Intermédiaire" %} class="text-danger" {% else %} class="text-info"{% endif %}>
-                                <th scope="row">{{ piece.id }}</th>
+                                <th scope="row">{{ piece.reference }}</th>
                                 <td class="col-3">{{ piece.libelle }}</td>
                                 <td>{{ piece.quantity }}</td>
                                 <td class="col-3">{{ piece.price ? piece.price|format_currency('EUR', {rounding_mode: 'floor'}) :  "Aucun prix de vente"}}</td>
                                 <td>{{ piece.type }}</td>
                                 <td class="col-3">{{ piece.priceCatalogue ? piece.priceCatalogue|format_currency('EUR', {rounding_mode: 'floor'}) :  "Aucun prix d'achat" }} </td>
+                                <td class="col-3">{{ piece.range ? piece.range.libelle : "Vide"}}</td>
                                 <td>
-                                    <a type="button" data-url="{{ path('piece.composition', {id : piece.id}) }}" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modalGeneric"><i class="material-icons" >construction</i></a>
+                                    {% if piece.pieceUseds|length == 0 %}
+                                        Vide
+                                    {% else %}
+                                         <a type="button" data-url="{{ path('piece.composition', {id : piece.id}) }}" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modalGeneric"><i class="material-icons" >construction</i></a>
+                                    {% endif %}
                                 </td>
                                 <td>
                                     <a href="{{ path('piece.edit', {id : piece.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >edit</i></a>

@@ -38,7 +38,7 @@ class Operation
     private $ranges;
 
     /**
-     * @ORM\OneToMany(targetEntity=Realisation::class, mappedBy="operation")
+     * @ORM\OneToMany(targetEntity=Realisation::class, mappedBy="operation", cascade={"remove"})
      */
     private $realisations;
 

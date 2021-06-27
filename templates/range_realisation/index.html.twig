@@ -49,7 +49,7 @@
                                 <td>{{ realisation.time|date('H:i:s') }}</td>
                                 <td>{{ realisation.workStation.libelle}}</td>
                                 <td>{{ realisation.machine.libelle }}</td>
-                                <td>{{ realisation.userWorkStation }}</td>
+                                <td>{{ realisation.userWorkStation ? realisation.userWorkStation : "Aucun" }}</td>
                                 <td>
                                     <a href="{{ path('range_realisation.realisation.edit', {id: rangeRealisation.id, realisationId: realisation.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >edit</i></a>
                                 </td>
@@ -58,6 +58,8 @@
 
                                 </td>
                             </tr>
+                        {% else %}
+                            <tr><td colspan="7">Aucunes réalisation d'opération disponibles.</td></tr>
                         {% endfor %}
                         </tbody>
                     </table>

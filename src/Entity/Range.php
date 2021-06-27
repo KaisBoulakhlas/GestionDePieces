@@ -43,7 +43,7 @@ class Range
     private $piece;
 
     /**
-     * @ORM\OneToMany(targetEntity=RangeRealisation::class, mappedBy="range")
+     * @ORM\OneToMany(targetEntity=RangeRealisation::class, mappedBy="range", cascade={"remove"})
      */
     private $rangeRealisations;
 

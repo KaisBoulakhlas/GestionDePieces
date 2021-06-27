@@ -65,6 +65,7 @@
                                     <th>Libellé</th>
                                     <th>Opérations</th>
                                     <th>Responsable</th>
+                                    <th>Pièce fabriquée</th>
                                     <th colspan="2">Actions</th>
                                     <th>Réalisation</th>
                                 </tr>
@@ -75,10 +76,17 @@
                                         <td>{{ range.id }}</td>
                                         <td>{{ range.libelle }}</td>
                                         <td>
-                                            <a href="{{ path('range.operations.index', {id: range.id}) }}" class="btn btn-sm btn-outline-primary"><i class="material-icons" >visibility</i></a>
+                                            <a type="button" data-url="{{ path('range.operations.show', {id : range.id}) }}" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modalGeneric"><i class="material-icons" >visibility</i></a>
                                         </td>
                                         <td>
                                             {{ range.userWorkstation }}
+                                        </td>
+                                        <td>
+                                            {% if range.piece == null  %}
+                                                Non rattachée
+                                            {% else %}
+                                                {{ range.piece }}
+                                            {% endif %}
                                         </td>
                                         <td>
                                             <a data-url="{{ path('home.range.edit', {'id': range.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary" data-toggle="modal" data-target="#modalGeneric"><i class="material-icons" >edit</i></a>

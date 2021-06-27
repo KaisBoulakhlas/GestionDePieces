@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+
 class OperationType extends AbstractType
 {
     /**
@@ -38,12 +39,20 @@ class OperationType extends AbstractType
                 'widget' => 'single_text',
                 'with_seconds' => true
             ])
+            ->add('ranges', EntityType::class, [
+                'class' => 'App\Entity\Range',
+                'multiple' => true,
+                'required' => true,
+                'label' => 'Gamme :'
+
+            ])
             ->add('workStation', EntityType::class, [
                 'label' => 'Poste de travail : ',
                 'placeholder' => 'Sélectionner un poste de travail ...',
                 'class'         => 'App\Entity\WorkStation',
                 'multiple'      => false,
             ]);
+
 
         $formModifier = function (FormInterface $form, WorkStation $workStation = null) {
             $machines = null === $workStation ? array() : $workStation->getMachines();

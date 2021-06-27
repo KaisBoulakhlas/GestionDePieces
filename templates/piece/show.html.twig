@@ -7,18 +7,20 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            <p class="text-muted mt-1 text-center">Nombre de pièces composantes: {{  piece.piecesChildren|length }}</p>
+            <p class="text-muted mt-1 text-center">Nombre de pièces composantes: {{  piece.pieceUseds|length }}</p>
                 <div class="modal-body">
-                    {% for pieceChildren in piece.piecesChildren %}
+                    {% for pieceUsed in piece.pieceUseds %}
                         <div class="card">
                             <div class="card-header">
-                                {{ pieceChildren.libelle }}
+                                {{ pieceUsed.piece.libelle }}
                             </div>
                             <div class="card-body">
                                 <blockquote class="blockquote mb-0">
-                                    <p>Quantité : {{ pieceChildren.quantity }}</p>
-                                    <p>Prix d'achat : {{ pieceChildren.priceCatalogue ? pieceChildren.priceCatalogue : 'Pas de prix d\'achat' }} €</p>
-                                    <footer class="blockquote-footer">{{ pieceChildren.type }}</footer>
+                                    <p>Quantité : {{ pieceUsed.quantity }} / Stock : {{ pieceUsed.piece.quantity }}</p>
+                                    {% if pieceUsed.piece.priceCatalogue != null %}
+                                        <p>Prix d'achat : {{ pieceUsed.piece.priceCatalogue }} €</p>
+                                    {% endif %}
+                                    <footer class="blockquote-footer">{{ pieceUsed.piece.type }}</footer>
                                 </blockquote>
                             </div>
                         </div>

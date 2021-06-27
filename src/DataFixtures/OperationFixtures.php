@@ -37,7 +37,6 @@ class OperationFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return array(
-            UserFixtures::class,
             RangeFixtures::class,
             WorkStationFixtures::class,
             MachineFixtures::class,

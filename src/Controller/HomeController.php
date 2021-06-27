@@ -54,6 +54,21 @@ class HomeController extends AbstractController
         }
         return $workers;
     }
+
+    /**
+     * @Route("/range/{id}/operations", name="range.operations.show")
+     * @param Range $range
+     * @param RangeRepository $rangeRepository
+     * @return Response
+     */
+    public function showOperations(Range $range,RangeRepository $rangeRepository): Response
+    {
+        $range = $rangeRepository->findOneBy(['id' => $range->getId()]);
+        return $this->render('home/show_operations.html.twig', [
+            'range' => $range
+        ]);
+    }
+
     /**
      * @Route("/home/range/add", name="home.range.add" , methods="GET|POST")
      * @param Request $request
@@ -63,7 +78,6 @@ class HomeController extends AbstractController
     {
         $range = new Range();
         $em = $this->em;
-        $ouvriers = $this->findUsersByRole('["ROLE_OUVRIER"]');
         $form = $this->createForm(RangeType::class, $range, [
             'action' => $this->generateUrl('home.range.add')
         ]);

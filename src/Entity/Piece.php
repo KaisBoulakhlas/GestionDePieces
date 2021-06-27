@@ -22,13 +22,13 @@ class Piece
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Libellé vide.")
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Quantité vide.")
      */
     private $quantity;
 
@@ -40,7 +40,7 @@ class Piece
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Type vide.")
      */
     private $type;
 
@@ -86,11 +86,23 @@ class Piece
      */
     private $estimateLine;
 
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Référence à remplir.")
+     */
+    private $reference;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PieceUsed::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $pieceUseds;
+
     public function __construct()
     {
         $this->orderPurchases = new ArrayCollection();
         $this->piecesParentes = new ArrayCollection();
         $this->piecesChildren = new ArrayCollection();
+        $this->pieceUseds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -288,6 +300,48 @@ class Piece
     public function __toString()
     {
         return $this->libelle;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PieceUsed[]
+     */
+    public function getPieceUseds(): Collection
+    {
+        return $this->pieceUseds;
+    }
+
+    public function addPieceUsed(PieceUsed $pieceUsed): self
+    {
+        if (!$this->pieceUseds->contains($pieceUsed)) {
+            $this->pieceUseds[] = $pieceUsed;
+            $pieceUsed->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removePieceUsed(PieceUsed $pieceUsed): self
+    {
+        if ($this->pieceUseds->removeElement($pieceUsed)) {
+            // set the owning side to null (unless already changed)
+            if ($pieceUsed->getParent() === $this) {
+                $pieceUsed->setParent(null);
+            }
+        }
+
+        return $this;
     }
 
 }

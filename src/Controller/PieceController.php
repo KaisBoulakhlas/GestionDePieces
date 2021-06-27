@@ -69,10 +69,7 @@ class PieceController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $piecesChildren = $form->get('piecesChildren')->getData();
-            foreach ($piecesChildren as $pieceChildren) {
-              $piece->addPiece($pieceChildren);
-            }
+            //dd($form->get('pieceUseds')->getData());
             $em->persist($piece);
             $em->flush();
             $this->addFlash('success_piece_add', "La pièce " . $piece->getLibelle() . " a été créée avec succès.");
@@ -99,26 +96,13 @@ class PieceController extends AbstractController
         $form = $this->createForm(PieceType::class, $piece);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $piecesChildren = $form->get('piecesChildren')->getData();
-            foreach ($piecesChildren as $pieceChildren) {
-                    $piece->addPiece($pieceChildren);
-            }
-            $piecesRemove = array_values(array_diff($piece->getPiecesChildren()->toArray(),$piecesChildren->toArray()));
-            foreach($piecesRemove as $pieceRemove) {
-                $piece->removePiece($pieceRemove);
-            }
             $em->flush();
             $this->addFlash('success_piece_edit', "La pièce ". $piece->getLibelle() . " a été modifiée avec succès.");
             return $this->redirectToRoute('pieces.index');
         };
 
-        $pieceChildrenId = array_map(function(Piece $piece){
-            return $piece->getId();
-        },$piece->getPiecesChildren()->toArray());
-
         return $this->render('piece/edit.html.twig', [
             'piece' => $piece,
-            'pieceChildrenId' => $pieceChildrenId,
             'form_edit_piece' => $form->createView(),
 
         ]);
