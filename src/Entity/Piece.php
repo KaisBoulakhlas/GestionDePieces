@@ -97,12 +97,18 @@ class Piece
      */
     private $pieceUseds;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderPurchaseLine::class, mappedBy="piece", orphanRemoval=true)
+     */
+    private $orderPurchaseLines;
+
     public function __construct()
     {
         $this->orderPurchases = new ArrayCollection();
         $this->piecesParentes = new ArrayCollection();
         $this->piecesChildren = new ArrayCollection();
         $this->pieceUseds = new ArrayCollection();
+        $this->orderPurchaseLines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -338,6 +344,36 @@ class Piece
             // set the owning side to null (unless already changed)
             if ($pieceUsed->getParent() === $this) {
                 $pieceUsed->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderPurchaseLine[]
+     */
+    public function getOrderPurchaseLines(): Collection
+    {
+        return $this->orderPurchaseLines;
+    }
+
+    public function addOrderPurchaseLine(OrderPurchaseLine $orderPurchaseLine): self
+    {
+        if (!$this->orderPurchaseLines->contains($orderPurchaseLine)) {
+            $this->orderPurchaseLines[] = $orderPurchaseLine;
+            $orderPurchaseLine->setPiece($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderPurchaseLine(OrderPurchaseLine $orderPurchaseLine): self
+    {
+        if ($this->orderPurchaseLines->removeElement($orderPurchaseLine)) {
+            // set the owning side to null (unless already changed)
+            if ($orderPurchaseLine->getPiece() === $this) {
+                $orderPurchaseLine->setPiece(null);
             }
         }
 

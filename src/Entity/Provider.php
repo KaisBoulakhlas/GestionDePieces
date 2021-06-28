@@ -49,9 +49,15 @@ class Provider
      */
     private $pieces;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderPurchase::class, mappedBy="provider", orphanRemoval=true)
+     */
+    private $orderPurchases;
+
     public function __construct()
     {
         $this->pieces = new ArrayCollection();
+        $this->orderPurchases = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,5 +146,35 @@ class Provider
     public function __toString()
     {
         return $this->libelle;
+    }
+
+    /**
+     * @return Collection|OrderPurchase[]
+     */
+    public function getOrderPurchases(): Collection
+    {
+        return $this->orderPurchases;
+    }
+
+    public function addOrderPurchase(OrderPurchase $orderPurchase): self
+    {
+        if (!$this->orderPurchases->contains($orderPurchase)) {
+            $this->orderPurchases[] = $orderPurchase;
+            $orderPurchase->setProvider($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderPurchase(OrderPurchase $orderPurchase): self
+    {
+        if ($this->orderPurchases->removeElement($orderPurchase)) {
+            // set the owning side to null (unless already changed)
+            if ($orderPurchase->getProvider() === $this) {
+                $orderPurchase->setProvider(null);
+            }
+        }
+
+        return $this;
     }
 }

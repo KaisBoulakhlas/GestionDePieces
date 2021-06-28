@@ -39,18 +39,24 @@ class OrderPurchase
     private $dateDeliveryReal;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Piece::class, inversedBy="orderPurchases")
-     */
-    private $pieces;
-
-    /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
      */
     private $priceCatalogue;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderPurchaseLine::class, mappedBy="orderPurchase", orphanRemoval=true)
+     */
+    private $orderPurchaseLines;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Provider::class, inversedBy="orderPurchases")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $provider;
+
     public function __construct()
     {
-        $this->pieces = new ArrayCollection();
+        $this->orderPurchaseLines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,30 +100,6 @@ class OrderPurchase
         return $this;
     }
 
-    /**
-     * @return Collection|Piece[]
-     */
-    public function getPieces(): Collection
-    {
-        return $this->pieces;
-    }
-
-    public function addPiece(Piece $piece): self
-    {
-        if (!$this->pieces->contains($piece)) {
-            $this->pieces[] = $piece;
-        }
-
-        return $this;
-    }
-
-    public function removePiece(Piece $piece): self
-    {
-        $this->pieces->removeElement($piece);
-
-        return $this;
-    }
-
     public function getPriceCatalogue(): ?string
     {
         return $this->priceCatalogue;
@@ -126,6 +108,48 @@ class OrderPurchase
     public function setPriceCatalogue(string $priceCatalogue): self
     {
         $this->priceCatalogue = $priceCatalogue;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderPurchaseLine[]
+     */
+    public function getOrderPurchaseLines(): Collection
+    {
+        return $this->orderPurchaseLines;
+    }
+
+    public function addOrderPurchaseLine(OrderPurchaseLine $orderPurchaseLine): self
+    {
+        if (!$this->orderPurchaseLines->contains($orderPurchaseLine)) {
+            $this->orderPurchaseLines[] = $orderPurchaseLine;
+            $orderPurchaseLine->setOrderPurchase($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderPurchaseLine(OrderPurchaseLine $orderPurchaseLine): self
+    {
+        if ($this->orderPurchaseLines->removeElement($orderPurchaseLine)) {
+            // set the owning side to null (unless already changed)
+            if ($orderPurchaseLine->getOrderPurchase() === $this) {
+                $orderPurchaseLine->setOrderPurchase(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProvider(): ?Provider
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(?Provider $provider): self
+    {
+        $this->provider = $provider;
 
         return $this;
     }
