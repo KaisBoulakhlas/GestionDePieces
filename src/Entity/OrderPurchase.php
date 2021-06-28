@@ -33,15 +33,10 @@ class OrderPurchase
     private $dateDeliveryPredicted;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
      */
     private $dateDeliveryReal;
-
-    /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
-     */
-    private $priceCatalogue;
 
     /**
      * @ORM\OneToMany(targetEntity=OrderPurchaseLine::class, mappedBy="orderPurchase", orphanRemoval=true)
@@ -96,18 +91,6 @@ class OrderPurchase
     public function setDateDeliveryReal(\DateTimeInterface $dateDeliveryReal): self
     {
         $this->dateDeliveryReal = $dateDeliveryReal;
-
-        return $this;
-    }
-
-    public function getPriceCatalogue(): ?string
-    {
-        return $this->priceCatalogue;
-    }
-
-    public function setPriceCatalogue(string $priceCatalogue): self
-    {
-        $this->priceCatalogue = $priceCatalogue;
 
         return $this;
     }

@@ -13,7 +13,8 @@ class PiecesFixtures extends Fixture implements DependentFixtureInterface
     public const PIECE_REFERENCE2 = "piece_reference_table_sans_peinture";
     public const PIECE_REFERENCE3 = "piece_reference_chevron";
     public const PIECE_REFERENCE4 = "piece_reference_traverse";
-
+    public const PIECE_REFERENCE5 = "piece_reference_peinture_bleue";
+    public const PIECE_REFERENCE6 = "piece_reference_peinture_blanche";
 
     public function load(ObjectManager $manager)
     {
@@ -79,6 +80,7 @@ class PiecesFixtures extends Fixture implements DependentFixtureInterface
         $potpeintureBlanche->setType("Achetée");
         $potpeintureBlanche->setProvider($this->getReference(ProviderFixtures::PROVIDER_REFERENCE2));
         $potpeintureBlanche->setReference($faker->unique()->regexify('[A-Z]{5}[0-4]{3}'));
+        $this->setReference(self::PIECE_REFERENCE5,$potpeintureBlanche);
         $manager->persist($potpeintureBlanche);
 
         $potpeintureBleue = new Piece();
@@ -88,6 +90,7 @@ class PiecesFixtures extends Fixture implements DependentFixtureInterface
         $potpeintureBleue->setType("Achetée");
         $potpeintureBleue->setProvider($this->getReference(ProviderFixtures::PROVIDER_REFERENCE2));
         $potpeintureBleue->setReference($faker->unique()->regexify('[A-Z]{5}[0-4]{3}'));
+        $this->setReference(self::PIECE_REFERENCE6,$potpeintureBleue);
         $manager->persist($potpeintureBleue);
 
         $chevron = new Piece();
