@@ -60,7 +60,7 @@ class Customer
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=20)
      * @Assert\NotBlank()
      */
     private $phone;

@@ -47,6 +47,9 @@
                         <li {% if route_name matches '{provider}'%} class="nav-item active" {% else %} class="nav-item" {% endif %}>
                             <a class="nav-link text-white" href="{{ path('provider.index') }}">Fournisseurs</a>
                         </li>
+                        <li {% if route_name matches '{customer}'%} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+                            <a class="nav-link text-white" href="{{ path('customer.index') }}">Clients</a>
+                        </li>
                     {% endif %}
                     {% if is_granted("ROLE_COMPTABLE") %}
                         <li class="nav-item">
