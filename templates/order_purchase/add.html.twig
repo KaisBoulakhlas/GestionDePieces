@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une commande d'achat{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Ajouter une commande d'achat</h1>
+        <hr/>
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.libelle) }}
+                </div>
+                <div class="col" style="margin-top:-5px;">
+                    {{ form_row(form.dateDeliveryPredicted) }}
+                </div>
+                <div class="col" style="margin-right:100px;">
+                    {{ form_row(form.provider) }}
+                </div>
+            </div>
+
+        <button type="button" id="add_order_line_purchase" class="btn btn-outline-success"><span class="form-row"><i class="material-icons" >add</i>Ligne</span></button>
+        <div id="order_line_purchase_collection" style="width:max-content;"
+             data-prototype="{{ include("order_purchase/_order_purchase_line_form.html.twig", {form: form.orderPurchaseLines.vars.prototype})| e('html_attr') }}"
+             data-index="{{ form.orderPurchaseLines|length > 0 ? form.orderPurchaseLines|last.vars.name + 1 : 0}}"
+        >
+
+        </div>
+            <div class="form-row">
+                <button class="btn btn-outline-success" type="submit" style="margin-left:5px;margin-top:30px;">{{ button|default('Ajouter')}}</button>
+            </div>
+        {{ form_row(form._token) }}
+        {{ form_end(form, {'render_rest': false}) }}
+    </div>
+
+{% endblock %}

@@ -62,21 +62,6 @@ class Piece
     private $provider;
 
     /**
-     * @ORM\ManyToMany(targetEntity=OrderPurchase::class, mappedBy="pieces")
-     */
-    private $orderPurchases;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Piece::class, inversedBy="piecesChildren")
-     */
-    private $piecesParentes;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Piece::class, mappedBy="piecesParentes")
-     */
-    private $piecesChildren;
-
-    /**
      * @ORM\ManyToOne(targetEntity=OrderLine::class, inversedBy="piece")
      */
     private $orderLine;
@@ -104,9 +89,6 @@ class Piece
 
     public function __construct()
     {
-        $this->orderPurchases = new ArrayCollection();
-        $this->piecesParentes = new ArrayCollection();
-        $this->piecesChildren = new ArrayCollection();
         $this->pieceUseds = new ArrayCollection();
         $this->orderPurchaseLines = new ArrayCollection();
     }
@@ -197,84 +179,6 @@ class Piece
     public function setProvider(?Provider $provider): self
     {
         $this->provider = $provider;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|OrderPurchase[]
-     */
-    public function getOrderPurchases(): Collection
-    {
-        return $this->orderPurchases;
-    }
-
-    public function addOrderPurchase(OrderPurchase $orderPurchase): self
-    {
-        if (!$this->orderPurchases->contains($orderPurchase)) {
-            $this->orderPurchases[] = $orderPurchase;
-            $orderPurchase->addPiece($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderPurchase(OrderPurchase $orderPurchase): self
-    {
-        if ($this->orderPurchases->removeElement($orderPurchase)) {
-            $orderPurchase->removePiece($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|self[]
-     */
-    public function getPiecesParentes(): Collection
-    {
-        return $this->piecesParentes;
-    }
-
-    public function addPiecesParente(self $piecesParente): self
-    {
-        if (!$this->piecesParentes->contains($piecesParente)) {
-            $this->piecesParentes[] = $piecesParente;
-        }
-
-        return $this;
-    }
-
-    public function removePiecesParente(self $piecesParente): self
-    {
-        $this->piecesParentes->removeElement($piecesParente);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|self[]
-     */
-    public function getPiecesChildren(): Collection
-    {
-        return $this->piecesChildren;
-    }
-
-    public function addPiece(self $pieceChildren): self
-    {
-        if (!$this->piecesChildren->contains($pieceChildren)) {
-            $this->piecesChildren[] = $pieceChildren;
-            $pieceChildren->addPiecesParente($this);
-        }
-
-        return $this;
-    }
-
-    public function removePiece(self $pieceChildren): self
-    {
-        if ($this->piecesChildren->removeElement($pieceChildren)) {
-            $pieceChildren->removePiecesParente($this);
-        }
 
         return $this;
     }

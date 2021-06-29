@@ -40,9 +40,7 @@
                 </div>
             <div class="form-row">
                 <div class="col-md-4 form-pieces-children" hidden>
-
-                        <button type="button" id="add_pieces_used" class="btn btn-outline-success"><span class="form-row"><i class="material-icons" >add</i>Pièces utilisées</span></button>
-
+                    <button type="button" id="add_pieces_used" class="btn btn-outline-success"><span class="form-row"><i class="material-icons" >add</i>Pièces utilisées</span></button>
                     <div id="pieces_useds_collection" style="width:max-content;"
                          data-prototype="{{ include("piece/_piece_used_form.html.twig", {form: form.pieceUseds.vars.prototype})| e('html_attr') }}"
                          data-index="{{ form.pieceUseds|length > 0 ? form.pieceUseds|last.vars.name + 1 : 0}}"

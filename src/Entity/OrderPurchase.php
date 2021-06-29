@@ -28,18 +28,16 @@ class OrderPurchase
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
      */
     private $dateDeliveryPredicted;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
      */
     private $dateDeliveryReal;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderPurchaseLine::class, mappedBy="orderPurchase", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=OrderPurchaseLine::class, mappedBy="orderPurchase", cascade={"persist"}, orphanRemoval=true)
      */
     private $orderPurchaseLines;
 
@@ -88,7 +86,7 @@ class OrderPurchase
         return $this->dateDeliveryReal;
     }
 
-    public function setDateDeliveryReal(\DateTimeInterface $dateDeliveryReal): self
+    public function setDateDeliveryReal(\DateTimeInterface $dateDeliveryReal = null): self
     {
         $this->dateDeliveryReal = $dateDeliveryReal;
 
@@ -136,4 +134,10 @@ class OrderPurchase
 
         return $this;
     }
+
+    public function __toString() : string
+    {
+        return $this->libelle;
+    }
+
 }

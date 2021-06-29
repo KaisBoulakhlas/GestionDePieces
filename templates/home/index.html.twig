@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mt-5">
-        <h1 class="mb-5">Tableau de bord - Atelier <i class="material-icons" >store</i></h1>
+        <h1 class="mb-5">Tableau de bord - {% if is_granted('ROLE_COMMERCIAL') %} Commandes {% else %}Atelier {% endif %} <i class="material-icons" >store</i></h1>
         {% for type, messages in app.flashes %}
             {% for message in messages %}
                 {% if type == 'success_range_delete' %}
@@ -37,10 +37,16 @@
                         {{ message }}
                     </div>
                 {% endif %}
+                {% if type == 'success_orderpuchase_add' %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
             {% endfor %}
         {% endfor %}
         <hr class="border-dark"/>
         <br>
+        {% if is_granted("ROLE_OUVRIER")  %}
         <div class="accordion" id="accordionExample">
             <div class="card">
                 <a class="btn btn-primary rounded-0" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -153,6 +159,68 @@
                 </div>
             </div>
         </div>
+        {% endif %}
+        {% if is_granted('ROLE_COMMERCIAL') %}
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <a class="btn btn-primary rounded-0" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div class="card-header bg-success" id="headingOne">
+                            <h2 class="mb-0">
+                                Commandes d'achats
+                            </h2>
+                        </div>
+                    </a>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <a href="{{ path('orderpurchase.add') }}" class="btn btn-sm btn-outline-primary m-3"><div class="form-row"><i class="material-icons" >add</i>Commande d'achat</div></a>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover rounded mw-100">
+                                    <thead class="text-center">
+                                    <tr>
+                                        <th></th>
+                                        <th>Libellé</th>
+                                        <th>Fournisseur</th>
+                                        <th>Date prévue</th>
+                                        <th>Date réelle</th>
+                                        <th>Voir</th>
+                                        <th colspan="2">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                    {% for orderPurchase in orderPurchases %}
+                                        <tr>
+                                            <th>{{ orderPurchase.id }}</th>
+                                            <th scope="row">{{ orderPurchase.libelle }}</th>
+                                            <td >{{ orderPurchase.provider.libelle }}</td>
+                                            <td>{{ orderPurchase.dateDeliveryPredicted|date('d/m/y H:i:s') }}</td>
+                                            <td>{{ orderPurchase.dateDeliveryReal ? orderPurchase.dateDeliveryReal|date('d/m/y H:i:s') : "Non Livrée"}}</td>
+                                            <td>
+                                                <a href="{{ path('orderpurchase.show', {'id': orderPurchase.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary"><i class="material-icons" >visibility</i></a>
+                                            </td>
+                                            <td>
+                                                {% if orderPurchase.dateDeliveryReal != null %}
+                                                    <i class="material-icons" >not_interested</i>
+                                                {% else %}
+                                                    <a href="{{ path('orderpurchase.edit', {'id': orderPurchase.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary"><i class="material-icons" >edit</i></a>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if orderPurchase.dateDeliveryReal != null %}
+                                                    <i class="material-icons" >not_interested</i>
+                                                {% else %}
+                                                    {% include('order_purchase/_delete_form.html.twig') %}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}

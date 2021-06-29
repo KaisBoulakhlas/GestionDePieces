@@ -1,0 +1,19 @@
+<div>
+    <div class="card mt-2 col-12 item">
+        <div class="form-row p-3">
+            <div class="form-group col-4">
+                {{ form_row(form.piece, {'attr': {'required': 'required', 'class' : 'form_select_piece'}}) }}
+            </div>
+            <div class="form-group col-4">
+                {{ form_row(form.quantity, {'attr': {'required': 'required', 'min' : 1, 'class': 'quantity_order_line'}}) }}
+            </div>
+
+            <div class="form-group col-4" style="margin-top: 36px;">
+                <span class="total_price"></span>
+            </div>
+            <div class="d-flex">
+                <button type="button" class="form-row btn btn-outline-danger btn-order_line_purchase_delete" style="margin-top: 15px;"><span class="form-row"><i class="material-icons" >delete</i></span></button>
+            </div>
+        </div>
+    </div>
+</div>

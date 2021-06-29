@@ -22,3 +22,26 @@ export const formPrototype = () => {
         }
     })
 }
+
+export const formPrototypeOrderLine = () => {
+    const $collection = $('#order_line_purchase_collection');
+    const $addButton = $('#add_order_line_purchase');
+    const $prototype = $($collection.data('prototype'));
+    let index =  parseInt($collection.data('index'));
+
+    $('body').on('click', '.btn-order_line_purchase_delete', function(){
+        console.log(this);
+        $(this).parent().parent().parent().remove();
+    })
+
+    $addButton.on('click', function(){
+        /*if($collection.children().length >= 1){
+            const optionId =  $collection.children().eq(-1).find('select').val()
+            $prototype.find(`option[value=${optionId}]`).remove()
+        }*/
+
+        if ($prototype.find('option').length > 0) {
+            $collection.append($prototype.html().replace(/__name__/g,index++))
+        }
+    })
+}

@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\Entity;
 use SebastianBergmann\CodeCoverage\Report\Text;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -36,7 +37,7 @@ class PieceType extends AbstractType
                     new Regex([
                         'pattern' => '#[A-Z]{5}[0-9]{3}#',
                         'message' => 'La référence doit être en majuscule et doit contenir 5 lettres suivis par 3 chiffres .',
-                    ])
+                    ]),
                 ]
             ])
             ->add('libelle', TextType::class, array(
@@ -48,7 +49,7 @@ class PieceType extends AbstractType
                 'label' => 'Quantité :',
                 'required' => true,
             ))
-            ->add('price', IntegerType::class, array(
+            ->add('price', NumberType::class, array(
                 'label' => 'Prix :',
             ))
             ->add('type', ChoiceType::class, array(
@@ -62,7 +63,7 @@ class PieceType extends AbstractType
                     'Livrable' => 'Livrable',
                 ],
             ))
-            ->add('priceCatalogue',IntegerType::class, array(
+            ->add('priceCatalogue',NumberType::class, array(
                 'label' => 'Prix d\'achat :',
             ))
             ->add('provider', EntityType::class, array(
@@ -87,6 +88,9 @@ class PieceType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Piece::class,
             'required' => false,
+            'constraints' => [
+                new UniqueEntity(['fields' => ['reference'], 'message' => 'Cette référence existe déjà.']),
+            ],
         ]);
     }
 }

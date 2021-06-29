@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Range;
 use App\Entity\User;
 use App\Form\RangeType;
+use App\Repository\OrderPurchaseRepository;
 use App\Repository\RangeRealisationRepository;
 use App\Repository\RangeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -15,9 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_OUVRIER")
- **/
+
 class HomeController extends AbstractController
 {
     protected $em;
@@ -31,16 +30,19 @@ class HomeController extends AbstractController
      * @Route("/home", name="home")
      * @param RangeRepository $rangeRepository
      * @param RangeRealisationRepository $rangeRealisationRepository
+     * @param OrderPurchaseRepository $orderPurchaseRepository
      * @return Response
      */
-    public function index(RangeRepository $rangeRepository,RangeRealisationRepository $rangeRealisationRepository): Response
+    public function index(RangeRepository $rangeRepository,RangeRealisationRepository $rangeRealisationRepository,OrderPurchaseRepository $orderPurchaseRepository): Response
     {
 
         $ranges = $rangeRepository->findBy(array(), array('id' => 'asc'));
         $rangeRealisations = $rangeRealisationRepository->findAll();
+        $orderPurchases = $orderPurchaseRepository->findAll();
         return $this->render('home/index.html.twig', [
             'ranges' => $ranges,
             'rangeRealisations' => $rangeRealisations,
+            'orderPurchases' => $orderPurchases,
         ]);
     }
 
