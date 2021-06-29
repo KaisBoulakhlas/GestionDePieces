@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fournisseurs{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-7 text-center mb-5">
+                <h1 class="heading-section"><i class="material-icons" >domain</i><span style="margin-left:10px;">Fournisseurs</span></h1>
+            </div>
+        </div>
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                {% if type == 'success_provider_delete' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if type == 'success_provider_add' %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if type == 'success_provider_edit' %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        <hr class="border-dark"/>
+        <br>
+        <a type="button" href="{{ path('provider.add') }}" class="btn mb-3 btn-outline-primary">
+                <span class="form-row">
+                    <i class="material-icons" >add</i>Fournisseur
+                </span>
+        </a>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-wrap table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="text-center">
+                        <tr>
+                            <th></th>
+                            <th>Libellé</th>
+                            <th>Adresse</th>
+                            <th>Ville</th>
+                            <th>Pays</th>
+                            <th colspan="2">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        {% for provider in providers %}
+                            <tr>
+                                <th scope="row">{{ provider.id }}</th>
+                                <td>{{ provider.libelle }}</td>
+                                <td>{{ provider.adresse }}</td>
+                                <td>{{ provider.city }}</td>
+                                <td>{{ provider.country }}</td>
+                                <td>
+                                    <a href="{{ path('provider.edit', {'id': provider.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary"><i class="material-icons" >edit</i></a>
+                                </td>
+                                <td>
+                                    {% include('provider/_delete_form.html.twig') %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

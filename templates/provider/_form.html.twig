@@ -1,0 +1,27 @@
+<div class="container">
+    {{ form_start(form) }}
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            {{ form_row(form.libelle) }}
+        </div>
+        <div class="form-group col-md-3">
+            {{ form_row(form.adresse) }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            {{ form_row(form.city) }}
+        </div>
+        <div class="form-group col-md-3">
+            {{ form_row(form.country) }}
+        </div>
+    </div>
+    <div class="form-row">
+        {% if form.vars.value.id == null %}
+            <button  class="btn btn-outline-success" type="submit" style="margin-left:5px;margin-top:30px;">{{ button|default('Ajouter')}}</button>
+        {% else %}
+            <button  class="btn btn-outline-warning" type="submit" style="margin-left:5px;margin-top:30px;">{{ button|default('Modifier')}}</button>
+        {% endif %}
+    </div>
+    {{ form_end(form) }}
+</div>
