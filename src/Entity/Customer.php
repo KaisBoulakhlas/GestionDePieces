@@ -110,6 +110,20 @@ class Customer
         return $this;
     }
 
+    public function getFullname(): ?string
+    {
+        return $this->firstname . " " . $this->name;
+    }
+
+    public function setFullName(string $firstname,string $name): self
+    {
+        $this->firstname = $firstname;
+        $this->name = $name;
+
+        return $this;
+    }
+
+
     public function getAdress(): ?string
     {
         return $this->adress;
@@ -228,5 +242,10 @@ class Customer
         }
 
         return $this;
+    }
+
+    public function __toString() : string
+    {
+        return $this->getFullname();
     }
 }

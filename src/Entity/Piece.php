@@ -67,11 +67,6 @@ class Piece
     private $orderLine;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EstimateLine::class, inversedBy="piece")
-     */
-    private $estimateLine;
-
-    /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message="Référence à remplir.")
      */
@@ -87,10 +82,16 @@ class Piece
      */
     private $orderPurchaseLines;
 
+    /**
+     * @ORM\OneToMany(targetEntity=EstimateLine::class, mappedBy="piece", orphanRemoval=true)
+     */
+    private $estimateLines;
+
     public function __construct()
     {
         $this->pieceUseds = new ArrayCollection();
         $this->orderPurchaseLines = new ArrayCollection();
+        $this->estimateLines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,18 +196,6 @@ class Piece
         return $this;
     }
 
-    public function getEstimateLine(): ?EstimateLine
-    {
-        return $this->estimateLine;
-    }
-
-    public function setEstimateLine(?EstimateLine $estimateLine): self
-    {
-        $this->estimateLine = $estimateLine;
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->libelle;
@@ -278,6 +267,36 @@ class Piece
             // set the owning side to null (unless already changed)
             if ($orderPurchaseLine->getPiece() === $this) {
                 $orderPurchaseLine->setPiece(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EstimateLine[]
+     */
+    public function getEstimateLines(): Collection
+    {
+        return $this->estimateLines;
+    }
+
+    public function addEstimateLine(EstimateLine $estimateLine): self
+    {
+        if (!$this->estimateLines->contains($estimateLine)) {
+            $this->estimateLines[] = $estimateLine;
+            $estimateLine->setPiece($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEstimateLine(EstimateLine $estimateLine): self
+    {
+        if ($this->estimateLines->removeElement($estimateLine)) {
+            // set the owning side to null (unless already changed)
+            if ($estimateLine->getPiece() === $this) {
+                $estimateLine->setPiece(null);
             }
         }
 

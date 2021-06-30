@@ -2,32 +2,35 @@
 
 namespace App\Form;
 
-use App\Entity\OrderPurchaseLine;
+use App\Entity\EstimateLine;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderPurchaseLineType extends AbstractType
+class EstimateLineType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('piece', EntityType::class, [
+            ->add('quantity',IntegerType::class,[
+                'label' => 'Quantité :',
+            ])
+            ->add('price',NumberType::class,[
+                'label' => 'Prix :',
+            ])
+            ->add('piece', EntityType::class,[
+                'label' => 'Pièces livrable :',
                 'class' => 'App\Entity\Piece',
-                'label' => "Piece :",
                 'multiple' => false,
-                'choices' => $options['choices'],
                 'query_builder' => function(EntityRepository $entityRepository){
                     return $entityRepository->createQueryBuilder('e')
                         ->where('e.type IN (:type)')
-                        ->setParameter('type', ['Matière première','Achetée']);
+                        ->setParameter('type', ['Livrable']);
                 }
-            ])
-            ->add('quantity',IntegerType::class,[
-                'label' => 'Quantité :',
             ])
         ;
     }
@@ -35,8 +38,8 @@ class OrderPurchaseLineType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => OrderPurchaseLine::class,
-            'choices' => [],
+            'data_class' => EstimateLine::class,
+            'required' => true
         ]);
     }
 }

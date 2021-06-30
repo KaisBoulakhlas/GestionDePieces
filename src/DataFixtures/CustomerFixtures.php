@@ -21,6 +21,7 @@ class CustomerFixtures extends Fixture
             $customer->setAdress($faker->address);
             $customer->setPhone($faker->phoneNumber);
             $customer->setPostalCode(str_replace(' ', '', $faker->postcode));
+            $this->setReference('customer_'.$i,$customer);
             $manager->persist($customer);
         }
 

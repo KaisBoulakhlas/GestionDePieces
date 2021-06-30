@@ -140,7 +140,6 @@ h2 {
 .display-3 {
     font-weight: 500 !important
 }
-
 @media (max-width: 479px) {
     .invoice {
         position: relative;

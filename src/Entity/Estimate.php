@@ -39,9 +39,14 @@ class Estimate
     private $customer;
 
     /**
-     * @ORM\OneToMany(targetEntity=EstimateLine::class, mappedBy="estimate", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=EstimateLine::class, mappedBy="estimate", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $estimateLines;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
 
     public function __construct()
     {
@@ -115,6 +120,18 @@ class Estimate
                 $estimateLine->setEstimate(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

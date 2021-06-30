@@ -74,7 +74,7 @@ class OrderPurchase
         return $this->dateDeliveryPredicted;
     }
 
-    public function setDateDeliveryPredicted(\DateTimeInterface $dateDeliveryPredicted): self
+    public function setDateDeliveryPredicted(?\DateTimeInterface $dateDeliveryPredicted): self
     {
         $this->dateDeliveryPredicted = $dateDeliveryPredicted;
 
@@ -86,7 +86,7 @@ class OrderPurchase
         return $this->dateDeliveryReal;
     }
 
-    public function setDateDeliveryReal(\DateTimeInterface $dateDeliveryReal = null): self
+    public function setDateDeliveryReal(?\DateTimeInterface $dateDeliveryReal): self
     {
         $this->dateDeliveryReal = $dateDeliveryReal;
 

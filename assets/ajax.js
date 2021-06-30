@@ -1,4 +1,5 @@
 import $ from "jquery";
+import {formPrototype} from "./formPrototype";
 
 export const AjaxModal = () => {
     const modalGeneric = $('#modalGeneric')
@@ -74,6 +75,39 @@ export const ajaxSelectUserAndWorkStation = () => {
             let $input = $(data).find(target)
             // On remplace notre <select> actuel
             $(target).replaceWith($input)
+        })
+    })
+}
+
+export const ajaxGetPricePiece = (formSelect,selector,inputQuantity,totalPrice,firstPartUrl) => {
+    $('body').on('change', selector, function(e){
+        let optionSelected = $(e.target).parents('.item').find('option:selected').val();
+        const quantity = parseInt($(e.target).parents('.item').find(inputQuantity).val());
+        const $totalPrice = $(e.target).parents('.item').find(totalPrice)
+        const url = firstPartUrl + optionSelected
+
+        $.get(url, function(price){
+            $totalPrice.html(parseFloat(price) * quantity + "€");
+        })
+
+    })
+}
+
+export const ajaxProvider = () => {
+    $(document).on('change', '#order_purchase_provider', function () {
+        let $field = $(this)
+        let $form = $field.closest('form')
+        // Les données à envoyer en Ajax
+        let data = $form.serializeArray();
+        // On soumet les données
+        console.log($form.attr('action'))
+        $.post($form.attr('action'), data).then(function (data) {
+            if ($form.find('#order_line_purchase_collection_container').length > 0) {
+                $form.find('#order_line_purchase_collection_container').remove()
+            }
+            const $html = ($(data).find('form #order_line_purchase_collection_container'))
+            $html.insertBefore($form.find("#add-btn").parent())
+           formPrototype('#order_line_purchase_collection','#add_order_line_purchase','.btn-order_line_purchase_delete');
         })
     })
 }

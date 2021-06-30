@@ -18,35 +18,31 @@ class EstimateLine
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
-    private $quantity;
+    private ?int $quantity;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @ORM\Column(type="float")
      * @Assert\NotBlank()
      */
-    private $price;
+    private ?float $price;
 
     /**
      * @ORM\ManyToOne(targetEntity=Estimate::class, inversedBy="estimateLines")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $estimate;
+    private ?Estimate $estimate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Piece::class, mappedBy="estimateLine")
+     * @ORM\ManyToOne(targetEntity=Piece::class, inversedBy="estimateLines")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $piece;
-
-    public function __construct()
-    {
-        $this->piece = new ArrayCollection();
-    }
+    private ?Piece $piece;
 
     public function getId(): ?int
     {
@@ -65,12 +61,12 @@ class EstimateLine
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(string $price): self
+    public function setPrice(?float $price): self
     {
         $this->price = $price;
 
@@ -89,32 +85,14 @@ class EstimateLine
         return $this;
     }
 
-    /**
-     * @return Collection|Piece[]
-     */
-    public function getPiece(): Collection
+    public function getPiece(): ?Piece
     {
         return $this->piece;
     }
 
-    public function addPiece(Piece $piece): self
+    public function setPiece(?Piece $piece): self
     {
-        if (!$this->piece->contains($piece)) {
-            $this->piece[] = $piece;
-            $piece->setEstimateLine($this);
-        }
-
-        return $this;
-    }
-
-    public function removePiece(Piece $piece): self
-    {
-        if ($this->piece->removeElement($piece)) {
-            // set the owning side to null (unless already changed)
-            if ($piece->getEstimateLine() === $this) {
-                $piece->setEstimateLine(null);
-            }
-        }
+        $this->piece = $piece;
 
         return $this;
     }

@@ -21,7 +21,7 @@ class OrderPurchaseLine
      * @ORM\ManyToOne(targetEntity=Piece::class, inversedBy="orderPurchaseLines")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $piece;
+    private ?Piece $piece;
 
     /**
      * @ORM\ManyToOne(targetEntity=OrderPurchase::class, inversedBy="orderPurchaseLines")

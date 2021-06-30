@@ -1,0 +1,36 @@
+<div class="container">
+    {{ form_start(form) }}
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            {{ form_row(form.title) }}
+        </div>
+        <div class="form-group col-md-6" style="margin-top:-6px;">
+            {{ form_row(form.deadline) }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            {{ form_row(form.customer) }}
+        </div>
+    </div>
+    <button type="button" id="add_estimate_line" class="btn btn-outline-success"><span class="form-row"><i class="material-icons" >add</i>Ligne de devis</span></button>
+    <div id="estimate_line_collection" style="width:max-content;"
+         data-prototype="{{ include("estimate/_estimate_line_form.html.twig", {form: form.estimateLines.vars.prototype})| e('html_attr') }}"
+         data-index="{{ form.estimateLines|length > 0 ? form.estimateLines|last.vars.name + 1 : 0}}"
+    >
+        {% if form.vars.value.id != null %}
+            {% for estimateLine in form.estimateLines %}
+                {{ include("estimate/_estimate_line_form.html.twig", {form: estimateLine}) }}
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="form-row">
+        {% if form.vars.value.id == null %}
+            <button  class="btn btn-outline-success" type="submit" style="margin-left:5px;margin-top:30px;">{{ button|default('Ajouter')}}</button>
+        {% else %}
+            <button  class="btn btn-outline-warning" type="submit" style="margin-left:5px;margin-top:30px;">{{ button|default('Modifier')}}</button>
+        {% endif %}
+    </div>
+    {{ form_row(form._token) }}
+    {{ form_end(form, {'render_rest': false}) }}
+</div>

@@ -6,6 +6,7 @@ use App\Entity\OrderPurchase;
 use App\Entity\Piece;
 use App\Form\OrderPurchaseType;
 use App\Repository\OrderPurchaseRepository;
+use App\Service\AddingQuantities;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,9 +22,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderPurchaseController extends AbstractController
 {
     protected $em;
+    private $addingQuantities;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager,AddingQuantities $addingQuantities)
     {
+        $this->addingQuantities = $addingQuantities;
         $this->em = $entityManager;
     }
 
@@ -36,10 +39,12 @@ class OrderPurchaseController extends AbstractController
     {
         $orderPurchase = new OrderPurchase();
         $em = $this->em;
-        $form = $this->createForm(OrderPurchaseType::class, $orderPurchase);
+        $form = $this->createForm(OrderPurchaseType::class, $orderPurchase, [
+            'action' => $this->generateUrl("orderpurchase.add")
+        ]);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $this->AddQuantityWhenTwoPieceIdentics($orderPurchase);
+        if($form->isSubmitted() && $form->isValid() && !$request->isXmlHttpRequest()){
+            $this->addingQuantities->AddQuantityWhenTwoPieceIdentics($orderPurchase);
             foreach ($orderPurchase->getOrderPurchaseLines() as $orderLine) {
                 $orderLine->setPriceCatalog($orderLine->getPiece()->getPriceCatalogue());
             }
@@ -88,25 +93,6 @@ class OrderPurchaseController extends AbstractController
     }
 
     /**
-     * @param OrderPurchase $orderPurchase
-     * @return array
-     */
-    public function AddQuantityWhenTwoPieceIdentics(OrderPurchase $orderPurchase){
-        $res = [];
-        foreach ($orderPurchase->getOrderPurchaseLines() as $orderLine) {
-            if (isset($res[$orderLine->getPiece()->getId()])) {
-                $orderPurchase->removeOrderPurchaseLine($orderLine);
-                $pieceUsed = $res[$orderLine->getPiece()->getId()];
-                $pieceUsed->setQuantity($pieceUsed->getQuantity() + $orderLine->getQuantity());
-                $orderPurchase->addOrderPurchaseLine($pieceUsed);
-                continue;
-            }
-            $res[$orderLine->getPiece()->getId()] = $orderLine;
-        }
-        return $res;
-    }
-
-    /**
      * @Route("/orderPurchase/edit/{id}", name="orderpurchase.edit", methods="GET|POST")
      * @param $id
      * @param Request $request
@@ -120,7 +106,7 @@ class OrderPurchaseController extends AbstractController
         $form = $this->createForm(OrderPurchaseType::class, $orderPurchase);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $this->AddQuantityWhenTwoPieceIdentics($orderPurchase);
+            $this->addingQuantities->AddQuantityWhenTwoPieceIdentics($orderPurchase);
             foreach ($orderPurchase->getOrderPurchaseLines() as $orderLine) {
                 $orderLine->setPriceCatalog($orderLine->getPiece()->getPriceCatalogue());
             }
