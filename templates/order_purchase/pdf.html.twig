@@ -1,22 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-pdf.html.twig' %}
 {% block title %}Commande n °{{ orderPurchase.id }}{% endblock %}
 
 {% block body %}
-    <div class="row justify-content-center">
-        <div class="col-md-7 text-center">
-            <a href="{{ path('home') }}" class="btn btn-sm btn-outline-primary w-25 mt-3"><i class="material-icons" >arrow_back</i></a>
-        </div>
-    </div>
-    <hr>
     <div class="container-fluid my-5 d-flex justify-content-center">
         <div class="card card-1">
             <div class="card-header bg-white">
                 <div class="media flex-sm-row flex-column-reverse justify-content-between ">
                     <div class="col my-auto">
                         <h4 class="mb-0">Commande d'achat n°<span class="change-color">{{ orderPurchase.id }}</span></h4>
-                    </div>
-                    <div class="example-wrapper">
-                        <h2><a target="_blank"  href="{{ path('pdf', {'id' : orderPurchase.id}) }}"  class="btn btn-sm btn-outline-primary m-3">Export PDF -></a></h2>
                     </div>
                 </div>
             </div>
@@ -36,36 +27,36 @@
                     </div>
                 </div>
                 {% if orderPurchase.dateDeliveryReal != null %}
-                <div class="row mb-3">
-                    <div class="col-auto">
-                        Date de livraison réelle :<h6 class="color-1 mb-0 change-color mt-1">{{ orderPurchase.dateDeliveryReal|date('d/m/y H:i') }}</h6>
+                    <div class="row mb-3">
+                        <div class="col-auto">
+                            Date de livraison réelle :<h6 class="color-1 mb-0 change-color mt-1">{{ orderPurchase.dateDeliveryReal|date('d/m/y H:i') }}</h6>
+                        </div>
                     </div>
-                </div>
                 {% endif %}
                 {% for orderPurchaseLine in orderPurchase.orderPurchaseLines %}
-                <div class="row mt-2">
-                    <div class="col">
-                        <div class="card card-2">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body my-auto text-right">
-                                        <div class="row my-auto flex-column flex-md-row">
-                                            <div class="col-auto my-auto">
-                                                <h6 class="mb-0">{{ orderPurchaseLine.piece.libelle }}</h6>
-                                            </div>
-                                            <div class="col my-auto"> <small>Prix d'achat : {{ orderPurchaseLine.priceCatalog }} € </small></div>
-                                            <div class="col-auto my-auto"> <small>Quantité : {{ orderPurchaseLine.quantity }}</small></div>
-                                            <div class="col my-auto">
-                                                <h6 class="mb-0">{{ orderPurchaseLine.quantity * orderPurchaseLine.priceCatalog }} €</h6>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="card card-2">
+                                <div class="card-body">
+                                    <div class="media">
+                                        <div class="media-body my-auto text-right">
+                                            <div class="row my-auto flex-column flex-md-row">
+                                                <div class="col-auto my-auto">
+                                                    <h6 class="mb-0">{{ orderPurchaseLine.piece.libelle }}</h6>
+                                                </div>
+                                                <div class="col my-auto"> <small>Prix d'achat : {{ orderPurchaseLine.priceCatalog }} € </small></div>
+                                                <div class="col-auto my-auto"> <small>Quantité : {{ orderPurchaseLine.quantity }}</small></div>
+                                                <div class="col my-auto">
+                                                    <h6 class="mb-0">{{ orderPurchaseLine.quantity * orderPurchaseLine.priceCatalog }} €</h6>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <hr class="my-3 ">
                                 </div>
-                                <hr class="my-3 ">
                             </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
                 <div class="row mt-4">
                     <div class="col">

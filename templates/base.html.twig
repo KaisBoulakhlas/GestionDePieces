@@ -49,7 +49,7 @@
                             <a class="nav-link text-white" href="{{ path('customer.index') }}">Clients</a>
                         </li>
                         <li {% if route_name matches '{^orders}'%} class="nav-item active" {% else %} class="nav-item" {% endif %}>
-                            <a class="nav-link text-white" href="{{ path('ordersale.index') }}">Clients</a>
+                            <a class="nav-link text-white" href="{{ path('ordersale.index') }}">Commandes de vente</a>
                         </li>
                     {% endif %}
                     {% if is_granted("ROLE_COMPTABLE") %}

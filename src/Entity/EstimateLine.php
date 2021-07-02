@@ -44,6 +44,22 @@ class EstimateLine
      */
     private ?Piece $piece;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderLine::class, mappedBy="estimateLine", cascade={"persist"})
+     */
+    private $orderLines;
+
+    public function __construct()
+    {
+        $this->orderLines = new ArrayCollection();
+    }
+
+
+    public function __toString()
+    {
+        return $this->getEstimate()->getTitle() . " - " . $this->getPiece() . " - ". $this->quantity . " - " . $this->price . "€";
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -66,7 +82,7 @@ class EstimateLine
         return $this->price;
     }
 
-    public function setPrice(?float $price): self
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 
@@ -96,4 +112,36 @@ class EstimateLine
 
         return $this;
     }
+
+    /**
+     * @return Collection|OrderLine[]
+     */
+    public function getOrderLines(): Collection
+    {
+        return $this->orderLines;
+    }
+
+    public function addOrderLine(OrderLine $orderLine): self
+    {
+        if (!$this->orderLines->contains($orderLine)) {
+            $this->orderLines[] = $orderLine;
+            $orderLine->setEstimateLine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderLine(OrderLine $orderLine): self
+    {
+        if ($this->orderLines->removeElement($orderLine)) {
+            // set the owning side to null (unless already changed)
+            if ($orderLine->getEstimateLine() === $this) {
+                $orderLine->setEstimateLine(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

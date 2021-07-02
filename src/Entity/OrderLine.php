@@ -27,13 +27,13 @@ class OrderLine
     private $quantity;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @ORM\Column(type="float")
      * @Assert\NotBlank()
      */
     private $price;
 
     /**
-     * @ORM\OneToMany(targetEntity=Piece::class, mappedBy="orderLine")
+     * @ORM\ManyToOne(targetEntity=Piece::class, inversedBy="orderLine")
      */
     private $piece;
 
@@ -43,11 +43,10 @@ class OrderLine
      */
     private $orderSale;
 
-
-    public function __construct()
-    {
-        $this->piece = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=EstimateLine::class, inversedBy="orderLines")
+     */
+    private $estimateLine;
 
     public function getId(): ?int
     {
@@ -66,44 +65,26 @@ class OrderLine
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(string $price): self
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Piece[]
-     */
-    public function getPiece(): Collection
+    public function getPiece(): ?Piece
     {
         return $this->piece;
     }
 
-    public function addPiece(Piece $piece): self
+    public function setPiece(?Piece $piece): self
     {
-        if (!$this->piece->contains($piece)) {
-            $this->piece[] = $piece;
-            $piece->setOrderLine($this);
-        }
-
-        return $this;
-    }
-
-    public function removePiece(Piece $piece): self
-    {
-        if ($this->piece->removeElement($piece)) {
-            // set the owning side to null (unless already changed)
-            if ($piece->getOrderLine() === $this) {
-                $piece->setOrderLine(null);
-            }
-        }
+        $this->piece = $piece;
 
         return $this;
     }
@@ -119,4 +100,21 @@ class OrderLine
 
         return $this;
     }
+
+    public function getEstimateLine(): ?EstimateLine
+    {
+        return $this->estimateLine;
+    }
+
+    public function setEstimateLine(?EstimateLine $estimateLine): self
+    {
+        $this->estimateLine = $estimateLine;
+
+        return $this;
+    }
+
+
+
+
+
 }

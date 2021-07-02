@@ -172,6 +172,26 @@
                     </a>
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <a href="{{ path('orderpurchase.add') }}" class="btn btn-sm btn-outline-primary m-3"><div class="form-row"><i class="material-icons" >add</i>Commande d'achat</div></a>
+                        <label>
+                            Mois :
+                            <select class="form-control form-control-sm" id="select_month">
+                                <option value="1">Janvier</option>
+                                <option value="2">Février</option>
+                                <option value="3">Mars</option>
+                                <option value="4">Avril</option>
+                                <option value="5">Mai</option>
+                                <option value="6">Juin</option>
+                                <option value="7">Juillet</option>
+                                <option value="8">Août</option>
+                                <option value="9">Septembre</option>
+                                <option value="10">Octobre</option>
+                                <option value="11">Novembre</option>
+                                <option value="12">Décembre</option>
+                            </select>
+                        </label>
+                        <div class="example-wrapper">
+                            <h2><a href="{{ path('export') }}"  class="btn btn-sm btn-outline-primary m-3">Export -></a></h2>
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover rounded mw-100">

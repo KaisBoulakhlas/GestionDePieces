@@ -1,20 +1,99 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrderSaleController!{% endblock %}
+{% block title %}Commandes de ventes{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="mt-5 p-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section"><i class="material-icons" >pending_actions</i>Commandes de ventes</h2>
+            </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        </div>
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                {% if type == 'success_ordersale_delete' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if type == 'success_ordersale_add' %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if type == 'success_ordersale_edit' %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if type == 'success_ordersale_validate' %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        <hr class="border-dark"/>
+        <br>
+        <a href="{{ path('ordersale.add') }}" class="btn btn-sm btn-outline-primary m-3"><div class="form-row"><i class="material-icons" >add</i>Commande de vente</div></a>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/GestionDePieces/src/Controller/OrderSaleController.php'|file_link(0) }}">src/Controller/OrderSaleController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/GestionDePieces/templates/order_sale/index.html.twig'|file_link(0) }}">templates/order_sale/index.html.twig</a></code></li>
-    </ul>
-</div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-wrap table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="text-center">
+                        <tr>
+                            <th></th>
+                            <th>Libellé</th>
+                            <th>Description</th>
+                            <th>Date de création</th>
+                            <th>Client</th>
+                            <th>Voir</th>
+                            <th colspan="3">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        {% for ordersale in ordersales %}
+                            <tr>
+                                <th>{{ ordersale.id }}</th>
+                                <th scope="row">{{ ordersale.libelle }}</th>
+                                <td >{{ ordersale.description }}</td>
+                                <td>{{ ordersale.date|date('d/m/y H:i:s') }}</td>
+                                <td>{{ ordersale.customer }}</td>
+                                <td>
+                                    <a href="{{ path('ordersale.show', {'id': ordersale.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary"><i class="material-icons" >visibility</i></a>
+                                </td>
+                                {% if ordersale.status == false %}
+                                    <td>
+                                        <a href="{{ path('ordersale.validate', {'id': ordersale.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-success"><i class="material-icons" >check</i></a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('ordersale.edit', {'id': ordersale.id}) }}" type="button" class="btn btn-sm mb-3 btn-outline-primary"><i class="material-icons" >edit</i></a>
+                                    </td>
+                                    <td>
+                                        {% include('order_sale/_delete_form.html.twig') %}
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <i class="material-icons" >check</i>
+                                    </td>
+                                    <td>
+                                        <i class="material-icons" >not_interested</i>
+                                    </td>
+                                    <td>
+                                        <i class="material-icons" >not_interested</i>
+                                    </td>
+                                {% endif %}
+
+                            </tr>
+                        {% else %}
+                            <td colspan="8">Aucunes commandes de ventes.</td>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

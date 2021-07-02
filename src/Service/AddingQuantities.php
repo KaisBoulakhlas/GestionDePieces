@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\Estimate;
 use App\Entity\OrderPurchase;
+use App\Entity\OrderSale;
 
 
 class AddingQuantities
@@ -44,6 +45,25 @@ class AddingQuantities
             }
         }
 
+        return $res;
+    }
+
+    public function AddQuantityWhenTwoEstimateLinesIdentics(OrderSale $orderSale){
+        $res = [];
+        foreach ($orderSale->getOrderLines() as $orderLine) {
+            if (isset($res[$orderLine->getEstimateLine()->getId()]) &&
+                $res[$orderLine->getEstimateLine()->getId()]->getEstimateLine()->getPrice() === $orderLine->getEstimateLine()->getPrice()) {
+                $orderSale->removeOrderLine($orderLine);
+                $orderLinePieceUsed = $res[$orderLine->getEstimateLine()->getId()];
+                $orderLinePieceUsed->setQuantity($orderLinePieceUsed->getQuantity() + $orderLine->getEstimateLine()->getQuantity());
+                $orderSale->addOrderLine($orderLinePieceUsed);
+                continue;
+            }
+            $res[$orderLine->getEstimateLine()->getId()] = $orderLine
+                ->setQuantity($orderLine->getEstimateLine()->getQuantity())
+                ->setPrice($orderLine->getEstimateLine()->getPrice())
+                ->setPiece($orderLine->getEstimateLine()->getPiece());
+        }
         return $res;
     }
 }

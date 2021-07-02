@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une commande de vente{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Modifier une commande de vente</h1>
+        <hr/>
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-3">
+                {{ form_row(form.libelle) }}
+            </div>
+            <div class="col-3" style="margin-top:-5px;">
+                {{ form_row(form.description) }}
+            </div>
+            <div class="col-6" style="margin-right:100px;">
+                {{ form_row(form.date) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3" style="margin-right:100px;">
+                {{ form_row(form.customer) }}
+            </div>
+        </div>
+        {% if form.orderLines is defined %}
+            <div id="order_line_sale_collection_container">
+                <button type="button" id="add_order_line_sale" class="btn btn-outline-success"><span class="form-row"><i class="material-icons" >add</i>Ligne</span></button>
+                <div id="order_line_sale_collection" style="width:max-content;"
+                     data-prototype="{{ include("order_sale/_order_sale_line_form.html.twig", {form: form.orderLines.vars.prototype})| e('html_attr') }}"
+                     data-index="{{ form.orderLines|length > 0 ? form.orderLines|last.vars.name + 1 : 0}}"
+                >
+                    {% for orderLine in form.orderLines %}
+                        {{ include("order_sale/_order_sale_line_form.html.twig", {form: orderLine}) }}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        <div class="form-row">
+            <button id="add-btn-order-sale" class="btn btn-outline-warning" type="submit" style="margin-left:5px;margin-top:30px;">{{ button|default('Modifier')}}</button>
+        </div>
+        {{ form_row(form._token) }}
+        {{ form_end(form, {'render_rest': false}) }}
+        </div>
+{% endblock %}

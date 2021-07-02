@@ -41,6 +41,10 @@ security:
         - { path: ^/range, roles: [IS_AUTHENTICATED_FULLY, ROLE_OUVRIER] }
         - { path: ^/workstation, roles: [IS_AUTHENTICATED_FULLY, ROLE_OUVRIER] }
         - { path: ^/machines, roles: [ IS_AUTHENTICATED_FULLY, ROLE_OUVRIER ] }
+        - { path: ^/order, roles: [ IS_AUTHENTICATED_FULLY, ROLE_COMMERCIAL ] }
+        - { path: ^/provider, roles: [ IS_AUTHENTICATED_FULLY, ROLE_COMMERCIAL ] }
+        - { path: ^/customer, roles: [ IS_AUTHENTICATED_FULLY, ROLE_COMMERCIAL ] }
+        - { path: ^/estimate, roles: [ IS_AUTHENTICATED_FULLY, ROLE_COMMERCIAL ] }
         #- { path: ^/orderPurchases, roles: [IS_AUTHENTICATED_FULLY, ROLE_COMMERCIAL] }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

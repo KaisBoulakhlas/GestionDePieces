@@ -214,6 +214,21 @@ class Customer
         return $this;
     }
 
+    public function getEstimateLines()
+    {
+        $estimateLines = [];
+        /** @var  Estimate $estimate */
+        foreach($this->getEstimates() as $estimate){
+            foreach($estimate->getCustomer()->getOrderSales() as $orderSale){
+                if($estimate->getDeadline() <= $orderSale->getDate() && $estimate->getStatus() == true){
+                    array_push($estimateLines, ...$estimate->getEstimateLines()->toArray());
+                }
+            }
+        }
+        return $estimateLines;
+
+    }
+
     /**
      * @return Collection|OrderSale[]
      */

@@ -19,6 +19,14 @@ class OrderPurchaseRepository extends ServiceEntityRepository
         parent::__construct($registry, OrderPurchase::class);
     }
 
+    public function findAllOrderPurchaseByMonth(int $month){
+        return $this->createQueryBuilder('o')
+            ->andWhere('EXTRACT(MONTH FROM o.dateDeliveryPredicted) = :month')
+            ->setParameter('month', $month)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return OrderPurchase[] Returns an array of OrderPurchase objects
     //  */

@@ -62,7 +62,7 @@ class Piece
     private $provider;
 
     /**
-     * @ORM\ManyToOne(targetEntity=OrderLine::class, inversedBy="piece")
+     * @ORM\OneToMany(targetEntity=OrderLine::class, mappedBy="piece")
      */
     private $orderLine;
 
@@ -92,6 +92,7 @@ class Piece
         $this->pieceUseds = new ArrayCollection();
         $this->orderPurchaseLines = new ArrayCollection();
         $this->estimateLines = new ArrayCollection();
+        $this->orderLine = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -297,6 +298,28 @@ class Piece
             // set the owning side to null (unless already changed)
             if ($estimateLine->getPiece() === $this) {
                 $estimateLine->setPiece(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function addOrderLine(OrderLine $orderLine): self
+    {
+        if (!$this->orderLine->contains($orderLine)) {
+            $this->orderLine[] = $orderLine;
+            $orderLine->setPiece($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderLine(OrderLine $orderLine): self
+    {
+        if ($this->orderLine->removeElement($orderLine)) {
+            // set the owning side to null (unless already changed)
+            if ($orderLine->getPiece() === $this) {
+                $orderLine->setPiece(null);
             }
         }
 

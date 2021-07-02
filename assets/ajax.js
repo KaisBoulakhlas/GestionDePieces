@@ -111,3 +111,34 @@ export const ajaxProvider = () => {
         })
     })
 }
+
+export const ajaxCustomer = () => {
+    $(document).on('change', '#order_sale_customer', function () {
+        let $field = $(this)
+        let $form = $field.closest('form')
+        // Les données à envoyer en Ajax
+        let data = $form.serializeArray();
+        // On soumet les données
+        console.log($form.attr('action'))
+
+        if ($form.find('#order_line_sale_collection_container').length > 0) {
+            $form.find('#order_line_sale_collection_container').remove()
+        }
+
+        const $loader =  $(`<div id="loader" class="container p-5 text-center">
+               <div class="spinner-border text-primary" role="status">
+                   <span class="sr-only">Loading...</span>
+               </div>
+           </div>`);
+
+        $loader.insertBefore($form.find("#add-btn-order-sale").parent())
+
+        $.post($form.attr('action'), data).then(function (data) {
+
+            const $html = ($(data).find('form #order_line_sale_collection_container'))
+            $html.insertBefore($form.find("#add-btn-order-sale").parent())
+            $loader.remove()
+            formPrototype('#order_line_sale_collection','#add_order_line_sale','.btn-order_line_sale_delete');
+        })
+    })
+}

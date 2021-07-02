@@ -39,7 +39,7 @@ class OrderSale
     private $date;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderLine::class, mappedBy="orderSale", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=OrderLine::class, mappedBy="orderSale", orphanRemoval=true, cascade={"persist","remove"})
      */
     private $orderLines;
 
@@ -48,9 +48,15 @@ class OrderSale
      */
     private $customer;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
+
     public function __construct()
     {
         $this->orderLines = new ArrayCollection();
+        $this->date = new \DateTime();
     }
 
     public function getId(): ?int
@@ -132,6 +138,18 @@ class OrderSale
     public function setCustomer(?Customer $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
