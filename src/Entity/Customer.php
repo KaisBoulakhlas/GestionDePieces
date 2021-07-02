@@ -219,10 +219,8 @@ class Customer
         $estimateLines = [];
         /** @var  Estimate $estimate */
         foreach($this->getEstimates() as $estimate){
-            foreach($estimate->getCustomer()->getOrderSales() as $orderSale){
-                if($estimate->getDeadline() <= $orderSale->getDate() && $estimate->getStatus() == true){
-                    array_push($estimateLines, ...$estimate->getEstimateLines()->toArray());
-                }
+            if($estimate->getStatus() == true){
+                array_push($estimateLines, ...$estimate->getEstimateLines()->toArray());
             }
         }
         return $estimateLines;

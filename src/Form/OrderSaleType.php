@@ -41,7 +41,6 @@ class OrderSaleType extends AbstractType
             ])
             ->add('customer',EntityType::class,[
                 'class' => 'App\Entity\Customer',
-                'placeholder' => 'Sélectionner un client ...',
                 'label' => 'Client :'
             ])
         ;

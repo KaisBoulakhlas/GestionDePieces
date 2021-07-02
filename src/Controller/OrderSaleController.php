@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\OrderLine;
-use App\Entity\OrderPurchase;
 use App\Entity\OrderSale;
-use App\Form\OrderPurchaseType;
 use App\Form\OrderSaleType;
 use App\Repository\OrderSaleRepository;
 use App\Service\AddingQuantities;
@@ -57,7 +54,7 @@ class OrderSaleController extends AbstractController
             'action' => $this->generateUrl("ordersale.add")
         ]);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid() && !$request->isXmlHttpRequest()){
             $this->addingQuantities->AddQuantityWhenTwoEstimateLinesIdentics($orderSale);
             $orderSale->setStatus(false);
             $em->persist($orderSale);
@@ -125,7 +122,7 @@ class OrderSaleController extends AbstractController
         $orderSale = $orderSaleRepository->find($id);
         $form = $this->createForm(OrderSaleType::class, $orderSale);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid() && !$request->isXmlHttpRequest()){
             $this->addingQuantities->AddQuantityWhenTwoEstimateLinesIdentics($orderSale);
             $em->flush();
             $this->addFlash('success_ordersale_edit', "La commande de vente ". $orderSale->getLibelle() . " a été modifiée avec succès.");

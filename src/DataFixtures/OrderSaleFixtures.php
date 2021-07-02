@@ -16,6 +16,7 @@ class OrderSaleFixtures extends Fixture implements DependentFixtureInterface
         $orderSale->setDate(new \DateTime("12/07/2020"));
         $orderSale->setDescription("kjdklfgglkg");
         $orderSale->setCustomer($this->getReference('customer_1'));
+        $orderSale->setStatus(0);
         $manager->persist($orderSale);
 
         $manager->flush();

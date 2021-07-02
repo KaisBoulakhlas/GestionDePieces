@@ -11,7 +11,7 @@
     </head>
     <body>
     {% if app.user %}
-        <nav {% if is_granted("ROLE_OUVRIER")  %} class="p-3 navbar navbar-expand-lg navbar-light bg-danger" {% else %} class="p-3 navbar navbar-expand-lg navbar-light bg-success" {% endif %}>
+        <nav {% if is_granted("ROLE_OUVRIER")  %} class="p-3 navbar navbar-expand-lg navbar-light bg-danger" {% elseif is_granted("ROLE_COMMERCIAL") %} class="p-3 navbar navbar-expand-lg navbar-light bg-success" {% else %} class="p-3 navbar navbar-expand-lg navbar-light bg-primary" {% endif %}>
             <a class="navbar-brand text-white text-uppercase" href="{{ path('home') }}">Gestion de pieces</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -52,15 +52,15 @@
                             <a class="nav-link text-white" href="{{ path('ordersale.index') }}">Commandes de vente</a>
                         </li>
                     {% endif %}
-                    {% if is_granted("ROLE_COMPTABLE") %}
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Commande de ventes</a>
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <li {% if route_name matches '{^utilisateur}' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+                            <a class="nav-link text-white" href="{{ path('users.index') }}">Utilisateurs</a>
                         </li>
                     {% endif %}
                 </ul>
             </div>
             <form class="form-inline my-2 my-lg-0">
-                <a href="{{ path('app_logout') }}" class="btn btn-sm btn-outline-primary text-white" role="button">Se déconnecter</a>
+                <a href="{{ path('app_logout') }}" {% if is_granted("ROLE_ADMIN") %} class="btn btn-sm btn-outline-danger text-white" {% else %} class="btn btn-sm btn-outline-primary text-white" {% endif %}role="button">Se déconnecter</a>
             </form>
         </nav>
         <div class="modal fade" id="modalGeneric" tabindex="-1" role="dialog" aria-labelledby="modalGenericLabel" aria-hidden="true">

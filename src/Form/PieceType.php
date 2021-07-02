@@ -4,9 +4,7 @@ namespace App\Form;
 
 use App\Entity\Piece;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping\Entity;
-use SebastianBergmann\CodeCoverage\Report\Text;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
@@ -16,10 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints\Unique;
 
 class PieceType extends AbstractType
 {

@@ -111,7 +111,7 @@ class OrderPurchaseController extends AbstractController
         $orderPurchase = $orderPurchaseRepository->find($id);
         $form = $this->createForm(OrderPurchaseType::class, $orderPurchase);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid() && !$request->isXmlHttpRequest()){
             $this->addingQuantities->AddQuantityWhenTwoPieceIdentics($orderPurchase);
             foreach ($orderPurchase->getOrderPurchaseLines() as $orderLine) {
                 $orderLine->setPriceCatalog($orderLine->getPiece()->getPriceCatalogue());

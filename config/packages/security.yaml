@@ -45,6 +45,5 @@ security:
         - { path: ^/provider, roles: [ IS_AUTHENTICATED_FULLY, ROLE_COMMERCIAL ] }
         - { path: ^/customer, roles: [ IS_AUTHENTICATED_FULLY, ROLE_COMMERCIAL ] }
         - { path: ^/estimate, roles: [ IS_AUTHENTICATED_FULLY, ROLE_COMMERCIAL ] }
-        #- { path: ^/orderPurchases, roles: [IS_AUTHENTICATED_FULLY, ROLE_COMMERCIAL] }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/utilisateurs, roles: [ IS_AUTHENTICATED_FULLY, ROLE_ADMIN ] }
         # - { path: ^/profile, roles: ROLE_USER }

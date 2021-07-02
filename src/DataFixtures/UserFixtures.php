@@ -94,6 +94,13 @@ class UserFixtures extends Fixture
          $commercial->setRoles(['ROLE_COMMERCIAL']);
          $manager->persist($commercial);
 
+        $admin = new User();
+        $admin->setEmail("admin@gmail.com");
+        $admin->setPassword($this->encoder->hashPassword($admin, 'azerty12345'));
+        $admin->setUsername("Admin");
+        $admin->setRoles(['ROLE_ADMIN']);
+        $manager->persist($admin);
+
          $manager->flush();
     }
 }
