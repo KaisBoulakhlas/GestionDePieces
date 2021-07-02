@@ -7,6 +7,7 @@ use App\Form\OrderSaleType;
 use App\Repository\OrderSaleRepository;
 use App\Service\AddingQuantities;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,9 +22,11 @@ class OrderSaleController extends AbstractController
 {
     protected $em;
     private $addingQuantities;
+    private $pdf;
 
-    public function __construct(EntityManagerInterface $entityManager,AddingQuantities $addingQuantities)
+    public function __construct(EntityManagerInterface $entityManager,AddingQuantities $addingQuantities,Pdf $pdf)
     {
+        $this->pdf = $pdf;
         $this->addingQuantities = $addingQuantities;
         $this->em = $entityManager;
     }
@@ -134,6 +137,43 @@ class OrderSaleController extends AbstractController
             'form' => $form->createView(),
 
         ]);
+    }
+
+    /**
+     * @Route("orderSale/pdf/{id}",  name="pdf.ordersale")
+     * @param OrderSale $orderSale
+     * @return Response
+     */
+    public function pdfAction(OrderSale $orderSale)
+    {
+        $snappy = $this->pdf;
+        $snappy->setOption('no-outline', true);
+        $snappy->setOption('page-size','LETTER');
+        $snappy->setOption('encoding', 'UTF-8');
+        $totalLinePrice = [];
+
+        foreach($orderSale->getOrderLines()->toArray() as $orderLine){
+            array_push($totalLinePrice,$orderLine->getPrice() * $orderLine->getQuantity());
+        }
+
+        $totalPrice = array_sum($totalLinePrice);
+        $html = $this->renderView('order_sale/pdf.html.twig', array(
+            'id' => $orderSale->getId(),
+            'orderSale' => $orderSale,
+            'totalPrice' => $totalPrice,
+        ));
+
+        $filename = $orderSale->getLibelle() . 'PDF';
+
+        return new Response(
+            $snappy->getOutputFromHtml($html),
+            200,
+            array(
+                'orientation'=>'Landscape',
+                'Content-Type'          => 'application/pdf',
+                'Content-Disposition'   => 'inline; filename="'.$filename.'.pdf"'
+            )
+        );
     }
 
     /**

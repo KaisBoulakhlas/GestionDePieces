@@ -58,12 +58,12 @@ class OrderPurchaseType extends AbstractType
             ]);
 
         $builder->get('provider')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event){
-            $data = $event->getData();
-            $provider = null;
-            foreach($data->getOrderPurchases()->toArray() as $orderPurchase){
-                $provider = $orderPurchase->getProvider();
+            $form = $event->getForm()->getParent();
+            $provider = $event->getData();
+            if(!$provider){
+                return;
             }
-            $this->addOrderPurchaseLineField($event->getForm(),$provider);
+            $this->addOrderPurchaseLineField($form, $provider);
         });
 
         $builder->get('provider')->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event){

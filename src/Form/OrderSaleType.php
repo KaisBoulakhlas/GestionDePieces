@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Customer;
 use App\Entity\OrderSale;
-use App\Entity\Provider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -37,13 +36,22 @@ class OrderSaleType extends AbstractType
             ])
             ->add('date',DateTimeType::class,[
                 'label' => 'Date de création :',
-                'date_widget' => 'single_text'
+                'widget' => 'single_text'
             ])
             ->add('customer',EntityType::class,[
                 'class' => 'App\Entity\Customer',
                 'label' => 'Client :'
             ])
         ;
+
+        $builder->get('customer')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event){
+            $form = $event->getForm()->getParent();
+            $customer = $event->getData();
+            if(!$customer){
+                return;
+            }
+            $this->addOrderSaleLineField($form, $customer);
+        });
 
         $builder->get('customer')->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event){
             $form = $event->getForm()->getParent();

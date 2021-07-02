@@ -138,6 +138,7 @@ export const ajaxCustomer = () => {
             const $html = ($(data).find('form #order_line_sale_collection_container'))
             $html.insertBefore($form.find("#add-btn-order-sale").parent())
             $loader.remove()
+            console.log(data);
             formPrototype('#order_line_sale_collection','#add_order_line_sale','.btn-order_line_sale_delete');
         })
     })

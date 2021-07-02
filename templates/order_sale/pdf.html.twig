@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-pdf.html.twig' %}
 {% block title %}Commande n °{{ orderSale.id }}{% endblock %}
 
 {% block body %}
@@ -8,9 +8,6 @@
                 <div class="media flex-sm-row flex-column-reverse justify-content-between ">
                     <div class="col my-auto">
                         <h4 class="mb-0">Commande de vente n°<span class="change-color">{{ orderSale.id }}</span></h4>
-                    </div>
-                    <div class="example-wrapper">
-                        <h2><a target="_blank"  href="{{ path('pdf.ordersale', {'id' : orderSale.id}) }}"  class="btn btn-sm btn-outline-danger m-3"><div class="form-row"><i class="material-icons" >picture_as_pdf</i>Export PDF</div></a></h2>
                     </div>
                     <div class="col-auto">
                         {% if orderSale.status == false %}
